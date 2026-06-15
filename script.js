@@ -361,16 +361,28 @@ ${message}
 }
 
 // ===== STORES MAP =====
+const storeMapUrls = [
+  // 1. Nomin Supermarket Dalanzadgad
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2791.9568910408544!2d104.41400267597143!3d43.576880079124016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165b43de25c7e1%3A0xfa53cfa15f5c15e5!2sNomin%20Supermarket!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn",
+  // 2. Cultural Palace Center Dalanzadgad
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2791.9056262423377!2d104.413812!3d43.57864835824578!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165b42d38589ab%3A0x7d6f5fb843a0e6ad!2sCentral%20Square%20Dalanzadgad!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn",
+  // 3. Jargalant District Dalanzadgad
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2792.0!2d104.425!3d43.575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165ab50cf585df%3A0xc3cf9069d3012877!2sDalanzadgad%2C%20Mongolia!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn",
+  // 4. Coming Soon: Tavan bogd
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27918.571439778233!2d104.3845!3d43.5786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165ab50cf585df%3A0xc3cf9069d3012877!2sDalanzadgad%2C%20Mongolia!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn",
+  // 5. Coming Soon: Airport Road
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27918.571439778233!2d104.3845!3d43.5786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165ab50cf585df%3A0xc3cf9069d3012877!2sDalanzadgad%2C%20Mongolia!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn"
+];
+
 function selectStore(index) {
   document.querySelectorAll('.store-item').forEach((item, i) => {
     item.classList.toggle('active', i === index);
   });
-  document.querySelectorAll('.map-pin').forEach((pin, i) => {
-    pin.style.transform = i === index
-      ? 'translate(-50%, -50%) scale(1.6)'
-      : 'translate(-50%, -50%) scale(1)';
-    pin.style.zIndex = i === index ? '10' : '2';
-  });
+  
+  const mapIframe = document.getElementById('gmap_canvas');
+  if (mapIframe && storeMapUrls[index]) {
+    mapIframe.src = storeMapUrls[index];
+  }
 }
 
 // ===== SMOOTH SCROLL =====
