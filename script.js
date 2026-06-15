@@ -85,6 +85,85 @@ document.querySelectorAll(
 
 // ===== CART SYSTEM =====
 let cartItems = [];
+let isWholesale = false;
+
+const productPrices = {
+  'Ванилла Зайрмаг': { retail: 4500, wholesale: 3500 },
+  'Баян Говь Онцгой': { retail: 5500, wholesale: 4500 },
+  'Хар Шоколад Зайрмаг': { retail: 5000, wholesale: 4000 },
+  'Сүүн Айс Крем': { retail: 3000, wholesale: 2500 }
+};
+
+function togglePrices(checked) {
+  isWholesale = checked;
+  
+  // Update toggle UI elements if they exist
+  const priceToggleCheckbox = document.getElementById('priceToggleCheckbox');
+  if (priceToggleCheckbox) priceToggleCheckbox.checked = isWholesale;
+  
+  const retailLabel = document.getElementById('retailLabel');
+  const wholesaleLabel = document.getElementById('wholesaleLabel');
+  if (retailLabel && wholesaleLabel) {
+    if (isWholesale) {
+      retailLabel.classList.remove('active');
+      wholesaleLabel.classList.add('active');
+    } else {
+      retailLabel.classList.add('active');
+      wholesaleLabel.classList.remove('active');
+    }
+  }
+  
+  // Update checkout order type dropdown
+  const forderType = document.getElementById('forderType');
+  if (forderType) {
+    forderType.value = isWholesale ? 'wholesale' : 'retail';
+  }
+  
+  // Update product card prices in the grid UI
+  document.querySelectorAll('.product-card').forEach(card => {
+    const nameHeader = card.querySelector('h3');
+    if (!nameHeader) return;
+    const name = nameHeader.textContent.trim();
+    const priceEl = card.querySelector('.product-price');
+    if (priceEl) {
+      let pPrice = null;
+      if (name.includes('Ванилла')) pPrice = productPrices['Ванилла Зайрмаг'];
+      else if (name.includes('Онцгой')) pPrice = productPrices['Баян Говь Онцгой'];
+      else if (name.includes('Шоколад')) pPrice = productPrices['Хар Шоколад Зайрмаг'];
+      else if (name.includes('Сүүн')) pPrice = productPrices['Сүүн Айс Крем'];
+      
+      if (pPrice) {
+        const val = isWholesale ? pPrice.wholesale : pPrice.retail;
+        const unit = name.includes('Сүүн') ? '/ конус' : '/ аяга';
+        priceEl.innerHTML = `₮${val.toLocaleString()} <small>${unit}</small>`;
+      }
+    }
+  });
+
+  // Update order form input labels/prices
+  const psPrice1 = document.getElementById('psPrice1');
+  const psPrice2 = document.getElementById('psPrice2');
+  const psPrice3 = document.getElementById('psPrice3');
+  const psPrice4 = document.getElementById('psPrice4');
+  if (psPrice1) psPrice1.textContent = `₮${productPrices['Ванилла Зайрмаг'][isWholesale ? 'wholesale' : 'retail'].toLocaleString()}`;
+  if (psPrice2) psPrice2.textContent = `₮${productPrices['Баян Говь Онцгой'][isWholesale ? 'wholesale' : 'retail'].toLocaleString()}`;
+  if (psPrice3) psPrice3.textContent = `₮${productPrices['Хар Шоколад Зайрмаг'][isWholesale ? 'wholesale' : 'retail'].toLocaleString()}`;
+  if (psPrice4) psPrice4.textContent = `₮${productPrices['Сүүн Айс Крем'][isWholesale ? 'wholesale' : 'retail'].toLocaleString()}`;
+
+  // Recalculate cart items
+  cartItems.forEach(item => {
+    if (productPrices[item.name]) {
+      item.price = isWholesale ? productPrices[item.name].wholesale : productPrices[item.name].retail;
+    }
+  });
+  
+  updateCart();
+  updateTotal();
+}
+
+function changeOrderType(value) {
+  togglePrices(value === 'wholesale');
+}
 
 function toggleCart() {
   document.getElementById('cartFloat').classList.toggle('open');
@@ -94,10 +173,16 @@ document.getElementById('cartClose').addEventListener('click', () => {
   document.getElementById('cartFloat').classList.remove('open');
 });
 
-function addToOrder(name, price) {
+function addToOrder(name, defaultPrice) {
+  let price = defaultPrice;
+  if (productPrices[name]) {
+    price = isWholesale ? productPrices[name].wholesale : productPrices[name].retail;
+  }
+  
   const existing = cartItems.find(item => item.name === name);
   if (existing) {
     existing.qty++;
+    existing.price = price;
   } else {
     cartItems.push({ name, price, qty: 1 });
   }
@@ -172,8 +257,6 @@ function goToCheckout() {
 }
 
 // ===== ORDER FORM TOTAL =====
-const prices = [4500, 5500, 5000, 3000];
-
 function changeQty(id, delta) {
   const input = document.getElementById(id);
   input.value = Math.max(0, parseInt(input.value || 0) + delta);
@@ -185,7 +268,13 @@ function updateTotal() {
   const q2 = parseInt(document.getElementById('qty2').value) || 0;
   const q3 = parseInt(document.getElementById('qty3').value) || 0;
   const q4 = parseInt(document.getElementById('qty4').value) || 0;
-  const sub = q1 * prices[0] + q2 * prices[1] + q3 * prices[2] + q4 * prices[3];
+  
+  const p1 = isWholesale ? productPrices['Ванилла Зайрмаг'].wholesale : productPrices['Ванилла Зайрмаг'].retail;
+  const p2 = isWholesale ? productPrices['Баян Говь Онцгой'].wholesale : productPrices['Баян Говь Онцгой'].retail;
+  const p3 = isWholesale ? productPrices['Хар Шоколад Зайрмаг'].wholesale : productPrices['Хар Шоколад Зайрмаг'].retail;
+  const p4 = isWholesale ? productPrices['Сүүн Айс Крем'].wholesale : productPrices['Сүүн Айс Крем'].retail;
+  
+  const sub = q1 * p1 + q2 * p2 + q3 * p3 + q4 * p4;
   const grand = sub + 1000;
   document.getElementById('formTotal').textContent = `₮${sub.toLocaleString()}`;
   document.getElementById('formGrandTotal').textContent = `₮${grand.toLocaleString()}`;
@@ -215,14 +304,12 @@ async function submitOrder(event) {
   const name = document.getElementById('fname').value;
   const phone = document.getElementById('fphone').value;
   const address = document.getElementById('faddress').value;
+  const orderType = document.getElementById('forderType').value;
   const payment = document.getElementById('fpayment').value;
   const note = document.getElementById('fnote').value || 'Байхгүй';
   const orderCode = 'БГ-' + Date.now().toString().slice(-6);
 
-  // Read toppings
-  const t1 = document.getElementById('topping1').value;
-  const t2 = document.getElementById('topping2').value;
-  const t3 = document.getElementById('topping3').value;
+  // Read toppings (only for soft serve cone now)
   const t4 = document.getElementById('topping4').value;
 
   const translateTopping = (val) => {
@@ -232,28 +319,37 @@ async function submitOrder(event) {
     return 'Байхгүй';
   };
 
+  // Prices based on current mode
+  const p1 = isWholesale ? productPrices['Ванилла Зайрмаг'].wholesale : productPrices['Ванилла Зайрмаг'].retail;
+  const p2 = isWholesale ? productPrices['Баян Говь Онцгой'].wholesale : productPrices['Баян Говь Онцгой'].retail;
+  const p3 = isWholesale ? productPrices['Хар Шоколад Зайрмаг'].wholesale : productPrices['Хар Шоколад Зайрмаг'].retail;
+  const p4 = isWholesale ? productPrices['Сүүн Айс Крем'].wholesale : productPrices['Сүүн Айс Крем'].retail;
+
   // Calculate total
-  const subTotal = q1 * prices[0] + q2 * prices[1] + q3 * prices[2] + q4 * prices[3];
+  const subTotal = q1 * p1 + q2 * p2 + q3 * p3 + q4 * p4;
   const grandTotal = subTotal + 1000;
 
   // Build items text
   let itemsDetail = '';
-  if (q1 > 0) itemsDetail += `• Ванилла Зайрмаг: ${q1}ш (Чимэглэл: ${translateTopping(t1)})\n`;
-  if (q2 > 0) itemsDetail += `• Баян Говь Онцгой: ${q2}ш (Чимэглэл: ${translateTopping(t2)})\n`;
-  if (q3 > 0) itemsDetail += `• Хар Шоколад: ${q3}ш (Чимэглэл: ${translateTopping(t3)})\n`;
-  if (q4 > 0) itemsDetail += `• Сүүн Айс Крем: ${q4}ш (Чимэглэл: ${translateTopping(t4)})\n`;
+  if (q1 > 0) itemsDetail += `• Ванилла Зайрмаг: ${q1}ш (Үнэ: ₮${p1.toLocaleString()})\n`;
+  if (q2 > 0) itemsDetail += `• Баян Говь Онцгой: ${q2}ш (Үнэ: ₮${p2.toLocaleString()})\n`;
+  if (q3 > 0) itemsDetail += `• Хар Шоколад: ${q3}ш (Үнэ: ₮${p3.toLocaleString()})\n`;
+  if (q4 > 0) itemsDetail += `• Сүүн Айс Крем: ${q4}ш (Чимэглэл: ${translateTopping(t4)}) (Үнэ: ₮${p4.toLocaleString()})\n`;
+
+  const orderTypeStr = isWholesale ? 'БӨӨНИЙ ЗАХИАЛГА (Дэлгүүр) 📦' : 'ЖИЖИГЛЭН ЗАХИАЛГА 🛒';
 
   // 1. Send Email Notification via Web3Forms
   const emailPayload = {
     access_key: '349453a0-1e23-4537-b10d-24ce3e661baf',
-    subject: `Баян Говь Захиалга: ${orderCode} - ${name} (${phone})`,
+    subject: `[${isWholesale ? 'БӨӨНИЙ' : 'ЖИЖИГЛЭН'}] Баян Говь Захиалга: ${orderCode} - ${name} (${phone})`,
     from_name: 'Баян Говь Вэбсайт',
     name: name,
     email: 'no-reply@bayangovi.mn',
     message: `
-🐫 ШИНЭ ЗАХИАЛГА ИРЛЭЭ 🐫
+🐫 ШИНЭ ЗАХИАЛГА ИРЛЭЭ (${isWholesale ? 'БӨӨНИЙ' : 'ЖИЖИГЛЭН'}) 🐫
 
 Захиалгын код: ${orderCode}
+Захиалгын төрөл: ${orderTypeStr}
 Захиалагчийн нэр: ${name}
 Утасны дугаар: ${phone}
 Хүргэх хаяг: ${address}
@@ -283,6 +379,7 @@ ${itemsDetail}
     const orders = JSON.parse(localStorage.getItem('bayan_govi_orders') || '[]');
     orders.push({
       code: orderCode, name, phone, address, payment, note,
+      type: orderType,
       items: { q1, q2, q3, q4 },
       total: grandTotal,
       timestamp: new Date().toISOString()
@@ -290,7 +387,7 @@ ${itemsDetail}
     localStorage.setItem('bayan_govi_orders', JSON.stringify(orders));
 
     // 2. Build WhatsApp Message & Link (using 94968379 as recipient)
-    const waText = `🐪 *БАЯН ГОВЬ ЗАХИАЛГА* 🐪\n\n*Код:* ${orderCode}\n*Нэр:* ${name}\n*Утас:* ${phone}\n*Хаяг:* ${address}\n*Төлбөр:* ${payment}\n*Нэмэлт:* ${note}\n\n*Захиалга:*\n${itemsDetail}\n*Нийт дүн:* ₮${grandTotal.toLocaleString()} (Хүргэлттэй)`;
+    const waText = `🐪 *БАЯН ГОВЬ ЗАХИАЛГА [${isWholesale ? 'БӨӨНИЙ' : 'ЖИЖИГЛЭН'}]* 🐪\n\n*Код:* ${orderCode}\n*Төрөл:* ${orderTypeStr}\n*Нэр:* ${name}\n*Утас:* ${phone}\n*Хаяг:* ${address}\n*Төлбөр:* ${payment}\n*Нэмэлт:* ${note}\n\n*Захиалга:*\n${itemsDetail}\n*Нийт дүн:* ₮${grandTotal.toLocaleString()} (Хүргэлттэй)`;
     const waUrl = `https://api.whatsapp.com/send?phone=97694968379&text=${encodeURIComponent(waText)}`;
 
     // Show success & Configure button

@@ -114,6 +114,17 @@
         <h2 class="section-title">Баян Говийн <em>амтуудыг</em> сонгоорой</h2>
         <p class="section-sub">Бүгд 100% ингэний хоормогоор хийсэн · Исгэлэн өвөрмөц гоё амттай (Томчууд, залуусын дуртай) · MNAS гэрчилгээтэй</p>
       </div>
+
+      <!-- Retail vs Wholesale Toggle Switch -->
+      <div class="price-toggle-container">
+        <span class="toggle-label active" id="retailLabel" onclick="togglePrices(false)">Жижиглэн 🛒</span>
+        <label class="price-switch">
+          <input type="checkbox" id="priceToggleCheckbox" onchange="togglePrices(this.checked)">
+          <span class="price-slider"></span>
+        </label>
+        <span class="toggle-label" id="wholesaleLabel" onclick="togglePrices(true)">Бөөний үнэ (Багцаар) 📦</span>
+      </div>
+
       <div class="products-grid">
         <div class="product-card">
           <div class="product-badge">Хамгийн их захиалагддаг</div>
@@ -127,8 +138,8 @@
             <p>Цэвэр ингэний хоормог + байгалийн ваниль + зөгийн бал. Чимэглэл: Нэрс, Гүзээлзгэнэ, Шоколадны сүмс сонгох боломжтой.</p>
             <div class="product-footer" style="flex-wrap: wrap; gap: 8px;">
               <div style="display: flex; flex-direction: column;">
-                <span class="product-price" style="font-size: 1.15rem; line-height: 1.1;">₮4,500 <small>/ аяга</small></span>
-                <span style="font-size: 0.76rem; color: #a89379; margin-top: 2px;">📦 Бөөний үнэ: ₮3,500</span>
+                <span class="product-price" id="priceVanilla" style="font-size: 1.15rem; line-height: 1.1;">₮4,500 <small>/ аяга</small></span>
+                <span style="font-size: 0.76rem; color: #a89379; margin-top: 2px;">📦 Бөөний үнэ (Багцаар): ₮3,500</span>
               </div>
               <button class="btn-buy" onclick="addToOrder('Ванилла Зайрмаг', 4500)">Нэмэх +</button>
             </div>
@@ -146,8 +157,8 @@
             <p>Ингэний хоормог + говийн зэрлэг жимс. Чимэглэл: Нэрс, Гүзээлзгэнэ, Шоколадны сүмс сонгох боломжтой.</p>
             <div class="product-footer" style="flex-wrap: wrap; gap: 8px;">
               <div style="display: flex; flex-direction: column;">
-                <span class="product-price" style="font-size: 1.15rem; line-height: 1.1;">₮5,500 <small>/ аяга</small></span>
-                <span style="font-size: 0.76rem; color: #a89379; margin-top: 2px;">📦 Бөөний үнэ: ₮4,500</span>
+                <span class="product-price" id="priceSpecial" style="font-size: 1.15rem; line-height: 1.1;">₮5,500 <small>/ аяга</small></span>
+                <span style="font-size: 0.76rem; color: #a89379; margin-top: 2px;">📦 Бөөний үнэ (Багцаар): ₮4,500</span>
               </div>
               <button class="btn-buy featured-btn" onclick="addToOrder('Баян Говь Онцгой', 5500)">Нэмэх +</button>
             </div>
@@ -164,8 +175,8 @@
             <p>Ингэний хоормог + бельги хар шоколад + говийн давс. Чимэглэл: Нэрс, Гүзээлзгэнэ, Шоколадны сүмс сонгох боломжтой.</p>
             <div class="product-footer" style="flex-wrap: wrap; gap: 8px;">
               <div style="display: flex; flex-direction: column;">
-                <span class="product-price" style="font-size: 1.15rem; line-height: 1.1;">₮5,000 <small>/ аяга</small></span>
-                <span style="font-size: 0.76rem; color: #a89379; margin-top: 2px;">📦 Бөөний үнэ: ₮4,000</span>
+                <span class="product-price" id="priceChocolate" style="font-size: 1.15rem; line-height: 1.1;">₮5,000 <small>/ аяга</small></span>
+                <span style="font-size: 0.76rem; color: #a89379; margin-top: 2px;">📦 Бөөний үнэ (Багцаар): ₮4,000</span>
               </div>
               <button class="btn-buy" onclick="addToOrder('Хар Шоколад Зайрмаг', 5000)">Нэмэх +</button>
             </div>
@@ -183,8 +194,8 @@
             <p>Шинэхэн үнээний сүүгээр хийсэн хөөсөрхөг зөөлөн конус айс крем. Дээрээс нь Нэрс, Гүзээлзгэнэ, Шоколадны сүмс асгуулах сонголттой.</p>
             <div class="product-footer" style="flex-wrap: wrap; gap: 8px;">
               <div style="display: flex; flex-direction: column;">
-                <span class="product-price" style="font-size: 1.15rem; line-height: 1.1;">₮3,000 <small>/ конус</small></span>
-                <span style="font-size: 0.76rem; color: #a89379; margin-top: 2px;">📦 Бөөний үнэ: ₮2,500</span>
+                <span class="product-price" id="priceCone" style="font-size: 1.15rem; line-height: 1.1;">₮3,000 <small>/ конус</small></span>
+                <span style="font-size: 0.76rem; color: #a89379; margin-top: 2px;">📦 Бөөний үнэ (Багцаар): ₮2,500</span>
               </div>
               <button class="btn-buy" onclick="addToOrder('Сүүн Айс Крем', 3000)">Нэмэх +</button>
             </div>
@@ -314,43 +325,25 @@
             <label>Бүтээгдэхүүн сонгох</label>
             <div class="product-select-grid">
               <div class="product-select-item" style="flex-wrap: wrap; padding: 12px 16px;">
-                <div class="ps-info" style="width: 100%; margin-bottom: 8px; display: flex; justify-content: space-between;"><span class="ps-name">Ванилла Зайрмаг</span><span class="ps-price">₮4,500</span></div>
-                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; gap: 10px;">
-                  <select id="topping1" style="background: #1a1510; color: #fff; border: 1px solid var(--border-gold); padding: 6px 10px; border-radius: 8px; font-size: 0.82rem; width: 55%;">
-                    <option value="none">Топпинггүй</option>
-                    <option value="нэрс">🫐 Нэрс сүмс</option>
-                    <option value="гүзээлзгэнэ">🍓 Гүзээлзгэнэ сүмс</option>
-                    <option value="шоколад">🍫 Шоколад сүмс</option>
-                  </select>
+                <div class="ps-info" style="width: 100%; margin-bottom: 8px; display: flex; justify-content: space-between;"><span class="ps-name">Ванилла Зайрмаг</span><span class="ps-price" id="psPrice1">₮4,500</span></div>
+                <div style="display: flex; justify-content: flex-end; width: 100%; align-items: center; gap: 10px;">
                   <div class="ps-qty"><button type="button" onclick="changeQty('qty1',-1)">−</button><input type="number" id="qty1" value="0" min="0" max="50" onchange="updateTotal()" /><button type="button" onclick="changeQty('qty1',1)">+</button></div>
                 </div>
               </div>
               <div class="product-select-item" style="flex-wrap: wrap; padding: 12px 16px;">
-                <div class="ps-info" style="width: 100%; margin-bottom: 8px; display: flex; justify-content: space-between;"><span class="ps-name">Баян Говь Онцгой</span><span class="ps-price">₮5,500</span></div>
-                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; gap: 10px;">
-                  <select id="topping2" style="background: #1a1510; color: #fff; border: 1px solid var(--border-gold); padding: 6px 10px; border-radius: 8px; font-size: 0.82rem; width: 55%;">
-                    <option value="none">Топпинггүй</option>
-                    <option value="нэрс">🫐 Нэрс сүмс</option>
-                    <option value="гүзээлзгэнэ">🍓 Гүзээлзгэнэ сүмс</option>
-                    <option value="шоколад">🍫 Шоколад сүмс</option>
-                  </select>
+                <div class="ps-info" style="width: 100%; margin-bottom: 8px; display: flex; justify-content: space-between;"><span class="ps-name">Баян Говь Онцгой</span><span class="ps-price" id="psPrice2">₮5,500</span></div>
+                <div style="display: flex; justify-content: flex-end; width: 100%; align-items: center; gap: 10px;">
                   <div class="ps-qty"><button type="button" onclick="changeQty('qty2',-1)">−</button><input type="number" id="qty2" value="0" min="0" max="50" onchange="updateTotal()" /><button type="button" onclick="changeQty('qty2',1)">+</button></div>
                 </div>
               </div>
               <div class="product-select-item" style="flex-wrap: wrap; padding: 12px 16px;">
-                <div class="ps-info" style="width: 100%; margin-bottom: 8px; display: flex; justify-content: space-between;"><span class="ps-name">Хар Шоколад</span><span class="ps-price">₮5,000</span></div>
-                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; gap: 10px;">
-                  <select id="topping3" style="background: #1a1510; color: #fff; border: 1px solid var(--border-gold); padding: 6px 10px; border-radius: 8px; font-size: 0.82rem; width: 55%;">
-                    <option value="none">Топпинггүй</option>
-                    <option value="нэрс">🫐 Нэрс сүмс</option>
-                    <option value="гүзээлзгэнэ">🍓 Гүзээлзгэнэ сүмс</option>
-                    <option value="шоколад">🍫 Шоколад сүмс</option>
-                  </select>
+                <div class="ps-info" style="width: 100%; margin-bottom: 8px; display: flex; justify-content: space-between;"><span class="ps-name">Хар Шоколад</span><span class="ps-price" id="psPrice3">₮5,000</span></div>
+                <div style="display: flex; justify-content: flex-end; width: 100%; align-items: center; gap: 10px;">
                   <div class="ps-qty"><button type="button" onclick="changeQty('qty3',-1)">−</button><input type="number" id="qty3" value="0" min="0" max="50" onchange="updateTotal()" /><button type="button" onclick="changeQty('qty3',1)">+</button></div>
                 </div>
               </div>
               <div class="product-select-item" style="flex-wrap: wrap; padding: 12px 16px;">
-                <div class="ps-info" style="width: 100%; margin-bottom: 8px; display: flex; justify-content: space-between;"><span class="ps-name">Сүүн Айс Крем</span><span class="ps-price">₮3,000</span></div>
+                <div class="ps-info" style="width: 100%; margin-bottom: 8px; display: flex; justify-content: space-between;"><span class="ps-name">Сүүн Айс Крем</span><span class="ps-price" id="psPrice4">₮3,000</span></div>
                 <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; gap: 10px;">
                   <select id="topping4" style="background: #1a1510; color: #fff; border: 1px solid var(--border-gold); padding: 6px 10px; border-radius: 8px; font-size: 0.82rem; width: 55%;">
                     <option value="none">Топпинггүй</option>
@@ -363,8 +356,24 @@
               </div>
             </div>
           </div>
-          <div class="form-group"><label for="fpayment">Төлбөрийн арга</label>
-            <select id="fpayment"><option value="qpay">QPay</option><option value="socialpay">SocialPay</option><option value="khanbank">Хаан банк</option><option value="golomt">Голомт банк</option><option value="cash">Бэлэн мөнгө (хүргэлтийн үед)</option></select>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="forderType">Захиалгын төрөл</label>
+              <select id="forderType" onchange="changeOrderType(this.value)">
+                <option value="retail">Жижиглэнгийн захиалга 🛒</option>
+                <option value="wholesale">Бөөний захиалга (Дэлгүүр) 📦</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="fpayment">Төлбөрийн арга</label>
+              <select id="fpayment">
+                <option value="qpay">QPay</option>
+                <option value="socialpay">SocialPay</option>
+                <option value="khanbank">Хаан банк</option>
+                <option value="golomt">Голомт банк</option>
+                <option value="cash">Бэлэн мөнгө (хүргэлтийн үед)</option>
+              </select>
+            </div>
           </div>
           <div class="form-group"><label for="fnote">Нэмэлт тайлбар</label><textarea id="fnote" rows="3" placeholder="Онцгой хүсэлт..."></textarea></div>
           <div class="order-summary">
