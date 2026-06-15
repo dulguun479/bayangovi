@@ -88,8 +88,8 @@ let cartItems = [];
 let isWholesale = false;
 
 const productPrices = {
-  'Ингэний хоормогтой сүүн зайрмаг': { retail: 3500, wholesale: 2500 },
-  'Сүүн Айс Крем': { retail: 3000, wholesale: 2500 }
+  'Ингэний хоормогтой сүүн зайрмаг': { retail: 3000, wholesale: 2500 },
+  'Конус зайрмаг': { retail: 3000, wholesale: 2500 }
 };
 
 function togglePrices(checked) {
@@ -119,7 +119,7 @@ function togglePrices(checked) {
   
   // Update product card prices in the grid UI
   const p1Val = productPrices['Ингэний хоормогтой сүүн зайрмаг'][isWholesale ? 'wholesale' : 'retail'];
-  const p2Val = productPrices['Сүүн Айс Крем'][isWholesale ? 'wholesale' : 'retail'];
+  const p2Val = productPrices['Конус зайрмаг'][isWholesale ? 'wholesale' : 'retail'];
 
   const priceVanillaEl = document.getElementById('priceVanilla');
   const priceConeEl = document.getElementById('priceCone');
@@ -232,8 +232,8 @@ function goToCheckout() {
     document.getElementById('qty2').value = 0;
     
     cartItems.forEach(item => {
-      if (item.name.includes('Ингэний хоормогтой')) document.getElementById('qty1').value = item.qty;
-      else if (item.name.includes('Сүүн')) document.getElementById('qty2').value = item.qty;
+      if (item.name.includes('Ингэний хоормогтой сүүн')) document.getElementById('qty1').value = item.qty;
+      else if (item.name.includes('Конус')) document.getElementById('qty2').value = item.qty;
     });
     updateTotal();
   }, 600);
@@ -251,7 +251,7 @@ function updateTotal() {
   const q2 = parseInt(document.getElementById('qty2').value) || 0;
   
   const p1 = isWholesale ? productPrices['Ингэний хоормогтой сүүн зайрмаг'].wholesale : productPrices['Ингэний хоормогтой сүүн зайрмаг'].retail;
-  const p2 = isWholesale ? productPrices['Сүүн Айс Крем'].wholesale : productPrices['Сүүн Айс Крем'].retail;
+  const p2 = isWholesale ? productPrices['Конус зайрмаг'].wholesale : productPrices['Конус зайрмаг'].retail;
   
   const sub = q1 * p1 + q2 * p2;
   const grand = sub + 1000;
@@ -286,9 +286,6 @@ async function submitOrder(event) {
   const note = document.getElementById('fnote').value || 'Байхгүй';
   const orderCode = 'БГ-' + Date.now().toString().slice(-6);
 
-  // Read toppings (only for soft serve cone now)
-  const t2 = document.getElementById('topping2').value;
-
   const translateTopping = (val) => {
     if (val === 'нэрс') return 'Нэрс сүмс 🫐';
     if (val === 'гүзээлзгэнэ') return 'Гүзээлзгэнэ сүмс 🍓';
@@ -296,9 +293,13 @@ async function submitOrder(event) {
     return 'Байхгүй';
   };
 
+  // Read toppings for both products
+  const t1 = document.getElementById('topping1') ? document.getElementById('topping1').value : 'none';
+  const t2 = document.getElementById('topping2').value;
+
   // Prices based on current mode
   const p1 = isWholesale ? productPrices['Ингэний хоормогтой сүүн зайрмаг'].wholesale : productPrices['Ингэний хоормогтой сүүн зайрмаг'].retail;
-  const p2 = isWholesale ? productPrices['Сүүн Айс Крем'].wholesale : productPrices['Сүүн Айс Крем'].retail;
+  const p2 = isWholesale ? productPrices['Конус зайрмаг'].wholesale : productPrices['Конус зайрмаг'].retail;
 
   // Calculate total
   const subTotal = q1 * p1 + q2 * p2;
@@ -306,8 +307,8 @@ async function submitOrder(event) {
 
   // Build items text
   let itemsDetail = '';
-  if (q1 > 0) itemsDetail += `• Ингэний хоормогтой сүүн зайрмаг: ${q1}ш (Үнэ: ₮${p1.toLocaleString()})\n`;
-  if (q2 > 0) itemsDetail += `• Сүүн Айс Крем: ${q2}ш (Чимэглэл: ${translateTopping(t2)}) (Үнэ: ₮${p2.toLocaleString()})\n`;
+  if (q1 > 0) itemsDetail += `• Ингэний хоормогтой сүүн зайрмаг (аяга): ${q1}ш (Чимэглэл: ${translateTopping(t1)}) (Үнэ: ₮${p1.toLocaleString()})\n`;
+  if (q2 > 0) itemsDetail += `• Ингэний хоормогтой конус зайрмаг: ${q2}ш (Чимэглэл: ${translateTopping(t2)}) (Үнэ: ₮${p2.toLocaleString()})\n`;
 
   const orderTypeStr = isWholesale ? 'БӨӨНИЙ ЗАХИАЛГА (Дэлгүүр) 📦' : 'ЖИЖИГЛЭН ЗАХИАЛГА 🛒';
 
