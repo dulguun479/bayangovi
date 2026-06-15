@@ -272,9 +272,9 @@ ${itemsDetail}
     });
     localStorage.setItem('bayan_govi_orders', JSON.stringify(orders));
 
-    // 2. Build WhatsApp Message & Link (using 99969000 as recipient)
+    // 2. Build WhatsApp Message & Link (using 94968379 as recipient)
     const waText = `🐪 *БАЯН ГОВЬ ЗАХИАЛГА* 🐪\n\n*Код:* ${orderCode}\n*Нэр:* ${name}\n*Утас:* ${phone}\n*Хаяг:* ${address}\n*Төлбөр:* ${payment}\n*Нэмэлт:* ${note}\n\n*Захиалга:*\n${itemsDetail}\n*Нийт дүн:* ₮${grandTotal.toLocaleString()} (Хүргэлттэй)`;
-    const waUrl = `https://api.whatsapp.com/send?phone=97699969000&text=${encodeURIComponent(waText)}`;
+    const waUrl = `https://api.whatsapp.com/send?phone=97694968379&text=${encodeURIComponent(waText)}`;
 
     // Show success & Configure button
     form.style.display = 'none';
@@ -296,7 +296,7 @@ ${itemsDetail}
 
   } catch (error) {
     console.error('Error submitting order:', error);
-    alert('Захиалга илгээхэд алдаа гарлаа. Та утсаар холбогдож өгнө үү: 9996-9000');
+    alert('Захиалга илгээхэд алдаа гарлаа. Та утсаар холбогдож өгнө үү: 9496-8379');
     btn.disabled = false;
     submitText.textContent = '✅ Дахин илгээх';
   }
@@ -354,7 +354,7 @@ ${message}
 
   } catch (error) {
     console.error('Error submitting contact form:', error);
-    alert('Илгээхэд алдаа гарлаа. Та утсаар холбогдож санал хүсэлтээ өгнө үү: 9996-9000');
+    alert('Илгээхэд алдаа гарлаа. Та утсаар холбогдож санал хүсэлтээ өгнө үү: 9496-8379');
     btn.textContent = orig;
     btn.disabled = false;
   }
@@ -420,5 +420,5 @@ updateTotal();
 
 console.log('🐪 Баян Говь — Ингэний Хоормогтой Зайрмаг');
 console.log('📍 Даланзадгад хот, Өмнөговь аймаг, Монгол улс');
-console.log('📞 9996-9000 | 9902-0609');
+console.log('📞 9496-8379 | 9902-0609');
 console.log('✅ MNAS Гэрчилгээ №26-318');
