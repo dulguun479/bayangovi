@@ -190,7 +190,7 @@ function updateTotal() {
 }
 
 // ===== ORDER FORM SUBMIT =====
-function submitOrder(event) {
+async function submitOrder(event) {
   event.preventDefault();
   const btn = document.getElementById('btnSubmit');
   const submitText = document.getElementById('submitText');
@@ -209,32 +209,97 @@ function submitOrder(event) {
   btn.disabled = true;
   submitText.textContent = '⏳ Илгээж байна...';
 
-  setTimeout(() => {
-    const name = document.getElementById('fname').value;
-    const phone = document.getElementById('fphone').value;
-    const address = document.getElementById('faddress').value;
-    const payment = document.getElementById('fpayment').value;
-    const note = document.getElementById('fnote').value;
-    const orderCode = 'БГ-' + Date.now().toString().slice(-6);
+  const name = document.getElementById('fname').value;
+  const phone = document.getElementById('fphone').value;
+  const address = document.getElementById('faddress').value;
+  const payment = document.getElementById('fpayment').value;
+  const note = document.getElementById('fnote').value || 'Байхгүй';
+  const orderCode = 'БГ-' + Date.now().toString().slice(-6);
 
+  // Calculate total
+  const subTotal = q1 * 4500 + q2 * 5500 + q3 * 5000;
+  const grandTotal = subTotal + 1000;
+
+  // Build items text
+  let itemsDetail = '';
+  if (q1 > 0) itemsDetail += `• Ванилла Зайрмаг: ${q1}ш\n`;
+  if (q2 > 0) itemsDetail += `• Баян Говь Онцгой: ${q2}ш\n`;
+  if (q3 > 0) itemsDetail += `• Хар Шоколад: ${q3}ш\n`;
+
+  // 1. Send Email Notification via Web3Forms
+  const emailPayload = {
+    access_key: '349453a0-1e23-4537-b10d-24ce3e661baf',
+    subject: `Баян Говь Захиалга: ${orderCode} - ${name} (${phone})`,
+    from_name: 'Баян Говь Вэбсайт',
+    name: name,
+    email: 'no-reply@bayangovi.mn',
+    message: `
+🐫 ШИНЭ ЗАХИАЛГА ИРЛЭЭ 🐫
+
+Захиалгын код: ${orderCode}
+Захиалагчийн нэр: ${name}
+Утасны дугаар: ${phone}
+Хүргэх хаяг: ${address}
+Төлбөрийн арга: ${payment}
+Нэмэлт тэмдэглэл: ${note}
+
+ЗАХИАЛСАН БҮТЭЭГДЭХҮҮН:
+${itemsDetail}
+-----------------------------
+Захиалгын дүн: ₮${subTotal.toLocaleString()}
+Хүргэлтийн хөлс: ₮1,000
+Нийт дүн: ₮${grandTotal.toLocaleString()}
+    `
+  };
+
+  try {
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(emailPayload)
+    });
+    
     // Save to localStorage
     const orders = JSON.parse(localStorage.getItem('bayan_govi_orders') || '[]');
     orders.push({
       code: orderCode, name, phone, address, payment, note,
       items: { q1, q2, q3 },
+      total: grandTotal,
       timestamp: new Date().toISOString()
     });
     localStorage.setItem('bayan_govi_orders', JSON.stringify(orders));
 
-    // Show success
+    // 2. Build WhatsApp Message & Link (using 99969000 as recipient)
+    const waText = `🐪 *БАЯН ГОВЬ ЗАХИАЛГА* 🐪\n\n*Код:* ${orderCode}\n*Нэр:* ${name}\n*Утас:* ${phone}\n*Хаяг:* ${address}\n*Төлбөр:* ${payment}\n*Нэмэлт:* ${note}\n\n*Захиалга:*\n${itemsDetail}\n*Нийт дүн:* ₮${grandTotal.toLocaleString()} (Хүргэлттэй)`;
+    const waUrl = `https://api.whatsapp.com/send?phone=97699969000&text=${encodeURIComponent(waText)}`;
+
+    // Show success & Configure button
     form.style.display = 'none';
     successMsg.style.display = 'block';
     document.getElementById('successCode').textContent = `Захиалгын дугаар: ${orderCode}`;
+    
+    const waBtn = document.getElementById('whatsappBtn');
+    if (waBtn) {
+      waBtn.href = waUrl;
+      waBtn.style.display = 'inline-flex';
+    }
+
+    // Auto open WhatsApp in a new tab
+    window.open(waUrl, '_blank');
 
     // Clear cart
     cartItems = [];
     updateCart();
-  }, 1500);
+
+  } catch (error) {
+    console.error('Error submitting order:', error);
+    alert('Захиалга илгээхэд алдаа гарлаа. Та утсаар холбогдож өгнө үү: 9996-9000');
+    btn.disabled = false;
+    submitText.textContent = '✅ Дахин илгээх';
+  }
 }
 
 // ===== CONTACT FORM =====
