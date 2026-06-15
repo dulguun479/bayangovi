@@ -3,6 +3,25 @@
    Ингэний Хоормогтой Зайрмаг
    ============================================ */
 
+// ===== FIREBASE CONFIGURATION =====
+const firebaseConfig = {
+  apiKey: "AIzaSyB5yQxlMLUXN5xgoC6WlHmIKgp1c_XieR0",
+  authDomain: "saikhan-gobi-fdbee.firebaseapp.com",
+  projectId: "saikhan-gobi-fdbee",
+  storageBucket: "saikhan-gobi-fdbee.firebasestorage.app",
+  messagingSenderId: "650891488214",
+  appId: "1:650891488214:web:dcade5f5b3a0074f99d277",
+  measurementId: "G-MLMLV7X1Q7"
+};
+
+let db = null;
+if (typeof firebase !== 'undefined') {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+} else {
+  console.warn("Firebase SDK not loaded. Firestore operations will be skipped.");
+}
+
 // ===== NAVBAR SCROLL =====
 const navbar = document.getElementById('navbar');
 const navLinks = document.getElementById('navLinks');
@@ -340,6 +359,32 @@ ${itemsDetail}
   };
 
   try {
+    // 1. Save to Firebase Firestore (if loaded)
+    if (db) {
+      try {
+        await db.collection('orders').add({
+          code: orderCode,
+          name: name,
+          phone: phone,
+          address: address,
+          orderType: orderType,
+          payment: payment,
+          note: note,
+          items: {
+            vanillaCup: { qty: q1, topping: t1 },
+            coneIcecream: { qty: q2, topping: t2 }
+          },
+          itemsText: itemsDetail.trim(),
+          total: grandTotal,
+          status: 'Шинэ',
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        console.log('Order saved to Firebase Firestore successfully.');
+      } catch (fsError) {
+        console.error('Failed to save to Firestore, continuing with email/whatsapp:', fsError);
+      }
+    }
+
     const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: {
