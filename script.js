@@ -88,7 +88,7 @@ let cartItems = [];
 let isWholesale = false;
 
 const productPrices = {
-  'Ингэний хоормогтой сүүн зайрмаг': { retail: 3000, wholesale: 2500 },
+  'Ингэний хоормогтой зайрмаг': { retail: 3000, wholesale: 2500 },
   'Конус зайрмаг': { retail: 3000, wholesale: 2500 }
 };
 
@@ -118,7 +118,7 @@ function togglePrices(checked) {
   }
   
   // Update product card prices in the grid UI
-  const p1Val = productPrices['Ингэний хоормогтой сүүн зайрмаг'][isWholesale ? 'wholesale' : 'retail'];
+  const p1Val = productPrices['Ингэний хоормогтой зайрмаг'][isWholesale ? 'wholesale' : 'retail'];
   const p2Val = productPrices['Конус зайрмаг'][isWholesale ? 'wholesale' : 'retail'];
 
   const priceVanillaEl = document.getElementById('priceVanilla');
@@ -232,7 +232,7 @@ function goToCheckout() {
     document.getElementById('qty2').value = 0;
     
     cartItems.forEach(item => {
-      if (item.name.includes('Ингэний хоормогтой сүүн')) document.getElementById('qty1').value = item.qty;
+      if (item.name.includes('Ингэний хоормогтой')) document.getElementById('qty1').value = item.qty;
       else if (item.name.includes('Конус')) document.getElementById('qty2').value = item.qty;
     });
     updateTotal();
@@ -250,7 +250,7 @@ function updateTotal() {
   const q1 = parseInt(document.getElementById('qty1').value) || 0;
   const q2 = parseInt(document.getElementById('qty2').value) || 0;
   
-  const p1 = isWholesale ? productPrices['Ингэний хоормогтой сүүн зайрмаг'].wholesale : productPrices['Ингэний хоормогтой сүүн зайрмаг'].retail;
+  const p1 = isWholesale ? productPrices['Ингэний хоормогтой зайрмаг'].wholesale : productPrices['Ингэний хоормогтой зайрмаг'].retail;
   const p2 = isWholesale ? productPrices['Конус зайрмаг'].wholesale : productPrices['Конус зайрмаг'].retail;
   
   const sub = q1 * p1 + q2 * p2;
@@ -298,7 +298,7 @@ async function submitOrder(event) {
   const t2 = document.getElementById('topping2').value;
 
   // Prices based on current mode
-  const p1 = isWholesale ? productPrices['Ингэний хоормогтой сүүн зайрмаг'].wholesale : productPrices['Ингэний хоормогтой сүүн зайрмаг'].retail;
+  const p1 = isWholesale ? productPrices['Ингэний хоормогтой зайрмаг'].wholesale : productPrices['Ингэний хоормогтой зайрмаг'].retail;
   const p2 = isWholesale ? productPrices['Конус зайрмаг'].wholesale : productPrices['Конус зайрмаг'].retail;
 
   // Calculate total
@@ -307,7 +307,7 @@ async function submitOrder(event) {
 
   // Build items text
   let itemsDetail = '';
-  if (q1 > 0) itemsDetail += `• Ингэний хоормогтой сүүн зайрмаг (аяга): ${q1}ш (Чимэглэл: ${translateTopping(t1)}) (Үнэ: ₮${p1.toLocaleString()})\n`;
+  if (q1 > 0) itemsDetail += `• Ингэний хоормогтой зайрмаг (аяга): ${q1}ш (Чимэглэл: ${translateTopping(t1)}) (Үнэ: ₮${p1.toLocaleString()})\n`;
   if (q2 > 0) itemsDetail += `• Ингэний хоормогтой конус зайрмаг: ${q2}ш (Чимэглэл: ${translateTopping(t2)}) (Үнэ: ₮${p2.toLocaleString()})\n`;
 
   const orderTypeStr = isWholesale ? 'БӨӨНИЙ ЗАХИАЛГА (Дэлгүүр) 📦' : 'ЖИЖИГЛЭН ЗАХИАЛГА 🛒';
