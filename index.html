@@ -118,11 +118,11 @@
         <div class="product-card">
           <div class="product-badge">Хамгийн их захиалагддаг</div>
           <div class="product-img-wrap">
-            <img src="product_flavors.png" alt="Ванилла зайрмаг" class="product-img" />
+            <img src="camel_icecream_cup.png" alt="Ванилла зайрмаг" class="product-img" />
             <div class="product-overlay"><button class="btn-add-cart" onclick="addToOrder('Ванилла Зайрмаг', 4500)">🛒 Захиалахад нэмэх</button></div>
           </div>
           <div class="product-info">
-            <div class="product-tag">Классик</div>
+            <div class="product-tag">Ингэний Хоормогтой</div>
             <h3>Ванилла Зайрмаг</h3>
             <p>Цэвэр ингэний хоормог + байгалийн ваниль + органик зөгийн бал</p>
             <div class="product-footer">
@@ -134,11 +134,11 @@
         <div class="product-card featured">
           <div class="product-badge featured-badge">✨ Онцгой амт</div>
           <div class="product-img-wrap">
-            <img src="product_flavors.png" alt="Баян Говь Онцгой" class="product-img" />
+            <img src="camel_icecream_cup.png" alt="Баян Говь Онцгой" class="product-img" />
             <div class="product-overlay"><button class="btn-add-cart" onclick="addToOrder('Баян Говь Онцгой', 5500)">🛒 Захиалахад нэмэх</button></div>
           </div>
           <div class="product-info">
-            <div class="product-tag special">Онцгой</div>
+            <div class="product-tag special">Ингэний Хоормогтой</div>
             <h3>Баян Говь Онцгой</h3>
             <p>Ингэний хоормог + цэцгийн тос + говийн зэрлэг жимс — манай тэргүүн бүтээгдэхүүн</p>
             <div class="product-footer">
@@ -149,16 +149,32 @@
         </div>
         <div class="product-card">
           <div class="product-img-wrap">
-            <img src="product_flavors.png" alt="Хар Шоколад" class="product-img" />
+            <img src="camel_icecream_cup.png" alt="Хар Шоколад" class="product-img" />
             <div class="product-overlay"><button class="btn-add-cart" onclick="addToOrder('Хар Шоколад Зайрмаг', 5000)">🛒 Захиалахад нэмэх</button></div>
           </div>
           <div class="product-info">
-            <div class="product-tag">Тансаг</div>
+            <div class="product-tag">Ингэний Хоормогтой</div>
             <h3>Хар Шоколад</h3>
             <p>Ингэний хоормог + бельги хар шоколад + говийн давс — гүн амттай хослол</p>
             <div class="product-footer">
               <span class="product-price">₮5,000 <small>/ аяга</small></span>
               <button class="btn-buy" onclick="addToOrder('Хар Шоколад Зайрмаг', 5000)">Нэмэх +</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-badge">Хямд бөгөөд зөөлөн</div>
+          <div class="product-img-wrap">
+            <img src="cone_icecream.png" alt="Сүүн Айс Крем" class="product-img" />
+            <div class="product-overlay"><button class="btn-add-cart" onclick="addToOrder('Сүүн Айс Крем', 3000)">🛒 Захиалахад нэмэх</button></div>
+          </div>
+          <div class="product-info">
+            <div class="product-tag">Сүүн Зайрмаг</div>
+            <h3>Сүүн Айс Крем</h3>
+            <p>Говийн шинэхэн үнээний сүүгээр хийсэн, хөөсөрхөг зөөлөн конус айс крем</p>
+            <div class="product-footer">
+              <span class="product-price">₮3,000 <small>/ конус</small></span>
+              <button class="btn-buy" onclick="addToOrder('Сүүн Айс Крем', 3000)">Нэмэх +</button>
             </div>
           </div>
         </div>
@@ -296,6 +312,10 @@
               <div class="product-select-item">
                 <div class="ps-info"><span class="ps-name">Хар Шоколад</span><span class="ps-price">₮5,000</span></div>
                 <div class="ps-qty"><button type="button" onclick="changeQty('qty3',-1)">−</button><input type="number" id="qty3" value="0" min="0" max="50" onchange="updateTotal()" /><button type="button" onclick="changeQty('qty3',1)">+</button></div>
+              </div>
+              <div class="product-select-item">
+                <div class="ps-info"><span class="ps-name">Сүүн Айс Крем</span><span class="ps-price">₮3,000</span></div>
+                <div class="ps-qty"><button type="button" onclick="changeQty('qty4',-1)">−</button><input type="number" id="qty4" value="0" min="0" max="50" onchange="updateTotal()" /><button type="button" onclick="changeQty('qty4',1)">+</button></div>
               </div>
             </div>
           </div>

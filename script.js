@@ -165,13 +165,14 @@ function goToCheckout() {
       if (item.name.includes('Ванилла')) document.getElementById('qty1').value = item.qty;
       else if (item.name.includes('Онцгой')) document.getElementById('qty2').value = item.qty;
       else if (item.name.includes('Шоколад')) document.getElementById('qty3').value = item.qty;
+      else if (item.name.includes('Сүүн')) document.getElementById('qty4').value = item.qty;
     });
     updateTotal();
   }, 600);
 }
 
 // ===== ORDER FORM TOTAL =====
-const prices = [4500, 5500, 5000];
+const prices = [4500, 5500, 5000, 3000];
 
 function changeQty(id, delta) {
   const input = document.getElementById(id);
@@ -183,7 +184,8 @@ function updateTotal() {
   const q1 = parseInt(document.getElementById('qty1').value) || 0;
   const q2 = parseInt(document.getElementById('qty2').value) || 0;
   const q3 = parseInt(document.getElementById('qty3').value) || 0;
-  const sub = q1 * prices[0] + q2 * prices[1] + q3 * prices[2];
+  const q4 = parseInt(document.getElementById('qty4').value) || 0;
+  const sub = q1 * prices[0] + q2 * prices[1] + q3 * prices[2] + q4 * prices[3];
   const grand = sub + 1000;
   document.getElementById('formTotal').textContent = `₮${sub.toLocaleString()}`;
   document.getElementById('formGrandTotal').textContent = `₮${grand.toLocaleString()}`;
@@ -200,8 +202,9 @@ async function submitOrder(event) {
   const q1 = parseInt(document.getElementById('qty1').value) || 0;
   const q2 = parseInt(document.getElementById('qty2').value) || 0;
   const q3 = parseInt(document.getElementById('qty3').value) || 0;
+  const q4 = parseInt(document.getElementById('qty4').value) || 0;
 
-  if (q1 + q2 + q3 === 0) {
+  if (q1 + q2 + q3 + q4 === 0) {
     alert('Та наад зах нь нэг бүтээгдэхүүн сонгоно уу!');
     return;
   }
@@ -217,7 +220,7 @@ async function submitOrder(event) {
   const orderCode = 'БГ-' + Date.now().toString().slice(-6);
 
   // Calculate total
-  const subTotal = q1 * 4500 + q2 * 5500 + q3 * 5000;
+  const subTotal = q1 * prices[0] + q2 * prices[1] + q3 * prices[2] + q4 * prices[3];
   const grandTotal = subTotal + 1000;
 
   // Build items text
@@ -225,6 +228,7 @@ async function submitOrder(event) {
   if (q1 > 0) itemsDetail += `• Ванилла Зайрмаг: ${q1}ш\n`;
   if (q2 > 0) itemsDetail += `• Баян Говь Онцгой: ${q2}ш\n`;
   if (q3 > 0) itemsDetail += `• Хар Шоколад: ${q3}ш\n`;
+  if (q4 > 0) itemsDetail += `• Сүүн Айс Крем: ${q4}ш\n`;
 
   // 1. Send Email Notification via Web3Forms
   const emailPayload = {
@@ -266,7 +270,7 @@ ${itemsDetail}
     const orders = JSON.parse(localStorage.getItem('bayan_govi_orders') || '[]');
     orders.push({
       code: orderCode, name, phone, address, payment, note,
-      items: { q1, q2, q3 },
+      items: { q1, q2, q3, q4 },
       total: grandTotal,
       timestamp: new Date().toISOString()
     });
