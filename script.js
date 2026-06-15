@@ -219,16 +219,29 @@ async function submitOrder(event) {
   const note = document.getElementById('fnote').value || 'Байхгүй';
   const orderCode = 'БГ-' + Date.now().toString().slice(-6);
 
+  // Read toppings
+  const t1 = document.getElementById('topping1').value;
+  const t2 = document.getElementById('topping2').value;
+  const t3 = document.getElementById('topping3').value;
+  const t4 = document.getElementById('topping4').value;
+
+  const translateTopping = (val) => {
+    if (val === 'нэрс') return 'Нэрс сүмс 🫐';
+    if (val === 'гүзээлзгэнэ') return 'Гүзээлзгэнэ сүмс 🍓';
+    if (val === 'шоколад') return 'Шоколад сүмс 🍫';
+    return 'Байхгүй';
+  };
+
   // Calculate total
   const subTotal = q1 * prices[0] + q2 * prices[1] + q3 * prices[2] + q4 * prices[3];
   const grandTotal = subTotal + 1000;
 
   // Build items text
   let itemsDetail = '';
-  if (q1 > 0) itemsDetail += `• Ванилла Зайрмаг: ${q1}ш\n`;
-  if (q2 > 0) itemsDetail += `• Баян Говь Онцгой: ${q2}ш\n`;
-  if (q3 > 0) itemsDetail += `• Хар Шоколад: ${q3}ш\n`;
-  if (q4 > 0) itemsDetail += `• Сүүн Айс Крем: ${q4}ш\n`;
+  if (q1 > 0) itemsDetail += `• Ванилла Зайрмаг: ${q1}ш (Чимэглэл: ${translateTopping(t1)})\n`;
+  if (q2 > 0) itemsDetail += `• Баян Говь Онцгой: ${q2}ш (Чимэглэл: ${translateTopping(t2)})\n`;
+  if (q3 > 0) itemsDetail += `• Хар Шоколад: ${q3}ш (Чимэглэл: ${translateTopping(t3)})\n`;
+  if (q4 > 0) itemsDetail += `• Сүүн Айс Крем: ${q4}ш (Чимэглэл: ${translateTopping(t4)})\n`;
 
   // 1. Send Email Notification via Web3Forms
   const emailPayload = {
