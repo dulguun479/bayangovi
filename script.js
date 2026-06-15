@@ -303,19 +303,61 @@ ${itemsDetail}
 }
 
 // ===== CONTACT FORM =====
-function submitContact(event) {
+async function submitContact(event) {
   event.preventDefault();
-  const btn = event.target.querySelector('button[type="submit"]');
+  const form = event.target;
+  const btn = form.querySelector('button[type="submit"]');
   const orig = btn.textContent;
-  btn.textContent = '✅ Амжилттай илгээгдлээ!';
+  
+  const name = document.getElementById('cname').value;
+  const phone = document.getElementById('cphone').value;
+  const message = document.getElementById('cmsg').value;
+
   btn.disabled = true;
-  btn.style.background = '#5A8C5A';
-  setTimeout(() => {
-    event.target.reset();
+  btn.textContent = '⏳ Илгээж байна...';
+
+  const payload = {
+    access_key: '349453a0-1e23-4537-b10d-24ce3e661baf',
+    subject: `Баян Говь Вэбсайт - Санал хүсэлт: ${name} (${phone})`,
+    from_name: 'Баян Говь Вэбсайт Санал Хүсэлт',
+    name: name,
+    email: 'no-reply@bayangovi.mn',
+    message: `
+🐫 ВЭБСАЙТААС САНАЛ ХҮСЭЛТ ИРЛЭЭ 🐫
+
+Илгээгч: ${name}
+Утасны дугаар: ${phone}
+
+Мессеж:
+${message}
+    `
+  };
+
+  try {
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    btn.textContent = '✅ Амжилттай илгээгдлээ!';
+    btn.style.background = '#5A8C5A';
+    setTimeout(() => {
+      form.reset();
+      btn.textContent = orig;
+      btn.disabled = false;
+      btn.style.background = '';
+    }, 3000);
+
+  } catch (error) {
+    console.error('Error submitting contact form:', error);
+    alert('Илгээхэд алдаа гарлаа. Та утсаар холбогдож санал хүсэлтээ өгнө үү: 9996-9000');
     btn.textContent = orig;
     btn.disabled = false;
-    btn.style.background = '';
-  }, 3000);
+  }
 }
 
 // ===== STORES MAP =====
