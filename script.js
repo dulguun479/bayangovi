@@ -1,5 +1,5 @@
 /* ============================================
-   БАЯН ГОВЬ — JavaScript
+   САЙХАН ГОВЬ — JavaScript
    Ингэний Хоормогтой Зайрмаг
    ============================================ */
 
@@ -315,8 +315,8 @@ async function submitOrder(event) {
   // 1. Send Email Notification via Web3Forms
   const emailPayload = {
     access_key: '349453a0-1e23-4537-b10d-24ce3e661baf',
-    subject: `[${isWholesale ? 'БӨӨНИЙ' : 'ЖИЖИГЛЭН'}] Баян Говь Захиалга: ${orderCode} - ${name} (${phone})`,
-    from_name: 'Баян Говь Вэбсайт',
+    subject: `[${isWholesale ? 'БӨӨНИЙ' : 'ЖИЖИГЛЭН'}] Сайхан Говь Захиалга: ${orderCode} - ${name} (${phone})`,
+    from_name: 'Сайхан Говь Вэбсайт',
     name: name,
     email: 'no-reply@bayangovi.mn',
     message: `
@@ -361,7 +361,7 @@ ${itemsDetail}
     localStorage.setItem('bayan_govi_orders', JSON.stringify(orders));
 
     // 2. Build WhatsApp Message & Link (using 94968379 as recipient)
-    const waText = `🐪 *БАЯН ГОВЬ ЗАХИАЛГА [${isWholesale ? 'БӨӨНИЙ' : 'ЖИЖИГЛЭН'}]* 🐪\n\n*Код:* ${orderCode}\n*Төрөл:* ${orderTypeStr}\n*Нэр:* ${name}\n*Утас:* ${phone}\n*Хаяг:* ${address}\n*Төлбөр:* ${payment}\n*Нэмэлт:* ${note}\n\n*Захиалга:*\n${itemsDetail}\n*Нийт дүн:* ₮${grandTotal.toLocaleString()} (Хүргэлттэй)`;
+    const waText = `🐪 *САЙХАН ГОВЬ ЗАХИАЛГА [${isWholesale ? 'БӨӨНИЙ' : 'ЖИЖИГЛЭН'}]* 🐪\n\n*Код:* ${orderCode}\n*Төрөл:* ${orderTypeStr}\n*Нэр:* ${name}\n*Утас:* ${phone}\n*Хаяг:* ${address}\n*Төлбөр:* ${payment}\n*Нэмэлт:* ${note}\n\n*Захиалга:*\n${itemsDetail}\n*Нийт дүн:* ₮${grandTotal.toLocaleString()} (Хүргэлттэй)`;
     const waUrl = `https://api.whatsapp.com/send?phone=97694968379&text=${encodeURIComponent(waText)}`;
 
     // Show success & Configure button
@@ -406,8 +406,8 @@ async function submitContact(event) {
 
   const payload = {
     access_key: '349453a0-1e23-4537-b10d-24ce3e661baf',
-    subject: `Баян Говь Вэбсайт - Санал хүсэлт: ${name} (${phone})`,
-    from_name: 'Баян Говь Вэбсайт Санал Хүсэлт',
+    subject: `Сайхан Говь Вэбсайт - Санал хүсэлт: ${name} (${phone})`,
+    from_name: 'Сайхан Говь Вэбсайт Санал Хүсэлт',
     name: name,
     email: 'no-reply@bayangovi.mn',
     message: `
@@ -506,7 +506,7 @@ document.addEventListener('keydown', (e) => {
 // ===== INIT =====
 updateTotal();
 
-console.log('🐪 Баян Говь — Ингэний Хоормогтой Зайрмаг');
+console.log('🐪 Сайхан Говь — Ингэний Хоормогтой Зайрмаг');
 console.log('📍 Даланзадгад хот, Өмнөговь аймаг, Монгол улс');
 console.log('📞 9496-8379 | 9902-0609');
 console.log('✅ MNAS Гэрчилгээ №26-318');
