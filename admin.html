@@ -529,6 +529,69 @@
       border-color: var(--accent-rose);
     }
 
+    .btn-action.partial {
+      background: transparent;
+      border: 1px solid #ff9800;
+      color: #ff9800;
+    }
+
+    .btn-action.partial:hover {
+      background: rgba(230, 140, 10, 0.1);
+    }
+
+    .order-status-badge.partial {
+      background: rgba(230, 140, 10, 0.15);
+      color: #ff9800;
+      border: 1px solid #ff9800;
+    }
+
+    /* Delivery Note / Checklist styling */
+    .delivery-note-box {
+      margin-top: 12px;
+      padding: 10px;
+      background: rgba(0,0,0,0.15);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .delivery-note-box label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--gold-light);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    .delivery-note-input {
+      width: 100%;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      color: #fff;
+      padding: 6px 8px;
+      font-size: 0.8rem;
+      resize: vertical;
+      outline: none;
+      font-family: inherit;
+    }
+    .delivery-note-input:focus {
+      border-color: var(--gold);
+    }
+    .btn-save-note {
+      margin-top: 5px;
+      background: rgba(212, 168, 83, 0.15);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      font-weight: 700;
+      transition: var(--trans);
+    }
+    .btn-save-note:hover {
+      background: var(--gold);
+      color: #000;
+    }
+
     .no-orders {
       grid-column: 1 / -1;
       text-align: center;
@@ -939,6 +1002,7 @@
           <div class="filter-tabs">
             <button class="filter-tab active" onclick="setFilter('all', this)">Бүгд</button>
             <button class="filter-tab" onclick="setFilter('Шинэ', this)">Шинэ ✨</button>
+            <button class="filter-tab" onclick="setFilter('Хэсэгчилсэн', this)">Хэсэгчилсэн 📦</button>
             <button class="filter-tab" onclick="setFilter('Хүргэгдсэн', this)">Хүргэгдсэн ✅</button>
             <button class="filter-tab" onclick="setFilter('Цуцлагдсан', this)">Цуцлагдсан ❌</button>
           </div>
@@ -1382,6 +1446,18 @@
       }
     }
 
+    async function saveDeliveryNote(docId) {
+      const text = document.getElementById(`dn-${docId}`).value;
+      try {
+        await db.collection('orders').doc(docId).update({
+          deliveryNote: text
+        });
+        alert("✅ Хүргэлтийн тэмдэглэл амжилттай хадгалагдлаа!");
+      } catch (e) {
+        alert("Тэмдэглэл хадгалахад алдаа гарлаа: " + e.message);
+      }
+    }
+
     async function deleteOrder(docId) {
       if (confirm("Энэ захиалгыг бүрмөсөн устгах уу? Сэргээх боломжгүй.")) {
         try {
@@ -1394,14 +1470,14 @@
 
     // Dashboard calculations
     function updateDashboard() {
-      // Sales: sum of Delivered orders total
+      // Sales: sum of Delivered & Partially Delivered orders total
       const totalSales = rawOrders
-        .filter(o => o.status === 'Хүргэгдсэн')
+        .filter(o => o.status === 'Хүргэгдсэн' || o.status === 'Хэсэгчилсэн')
         .reduce((sum, o) => sum + (o.total || 0), 0);
       
       const totalOrders = rawOrders.length;
       const newOrders = rawOrders.filter(o => o.status === 'Шинэ').length;
-      const deliveredOrders = rawOrders.filter(o => o.status === 'Хүргэгдсэн').length;
+      const deliveredOrders = rawOrders.filter(o => o.status === 'Хүргэгдсэн' || o.status === 'Хэсэгчилсэн').length;
 
       document.getElementById('statSales').textContent = `₮${totalSales.toLocaleString()}`;
       document.getElementById('statTotal').textContent = totalOrders;
@@ -1495,21 +1571,30 @@
         if (o.status === 'Шинэ') {
           buttonsHtml = `
             <button class="btn-action deliver" onclick="updateOrderStatus('${o.id}', 'Хүргэгдсэн')">✓ Хүргэсэн</button>
+            <button class="btn-action partial" onclick="updateOrderStatus('${o.id}', 'Хэсэгчилсэн')">📦 Хэсэгчилсэн</button>
             <button class="btn-action cancel" onclick="updateOrderStatus('${o.id}', 'Цуцлагдсан')">✕ Цуцлах</button>
           `;
         } else if (o.status === 'Хүргэгдсэн') {
           buttonsHtml = `
+            <button class="btn-action partial" onclick="updateOrderStatus('${o.id}', 'Хэсэгчилсэн')">📦 Хэсэгчилсэн</button>
+            <button class="btn-action cancel" onclick="updateOrderStatus('${o.id}', 'Цуцлагдсан')">✕ Цуцлах</button>
+          `;
+        } else if (o.status === 'Хэсэгчилсэн') {
+          buttonsHtml = `
+            <button class="btn-action deliver" onclick="updateOrderStatus('${o.id}', 'Хүргэгдсэн')">✓ Хүргэсэн</button>
             <button class="btn-action cancel" onclick="updateOrderStatus('${o.id}', 'Цуцлагдсан')">✕ Цуцлах</button>
           `;
         } else if (o.status === 'Цуцлагдсан') {
           buttonsHtml = `
             <button class="btn-action deliver" onclick="updateOrderStatus('${o.id}', 'Хүргэгдсэн')">✓ Хүргэсэн</button>
+            <button class="btn-action partial" onclick="updateOrderStatus('${o.id}', 'Хэсэгчилсэн')">📦 Хэсэгчилсэн</button>
           `;
         }
 
         // Status class for UI
         let statusClass = 'new';
         if (o.status === 'Хүргэгдсэн') statusClass = 'delivered';
+        if (o.status === 'Хэсэгчилсэн') statusClass = 'partial';
         if (o.status === 'Цуцлагдсан') statusClass = 'canceled';
 
         return `
@@ -1535,6 +1620,13 @@
               <span>Хүргэлттэй нийт:</span>
               <span class="order-total-price">₮${(o.total || 0).toLocaleString()}</span>
             </div>
+            
+            <div class="delivery-note-box">
+              <label for="dn-${o.id}">🚚 Хүргэлтийн тэмдэглэл (Хэсэгчилсэн г.м):</label>
+              <textarea id="dn-${o.id}" class="delivery-note-input" rows="2" placeholder="Жишээ: 20 аяга өгсөн, конус дутуу байгаа...">${o.deliveryNote || ''}</textarea>
+              <button class="btn-save-note" onclick="saveDeliveryNote('${o.id}')">💾 Хадгалах</button>
+            </div>
+
             <div class="order-actions">
               ${buttonsHtml}
               <button class="btn-action delete" title="Устгах" onclick="deleteOrder('${o.id}')">🗑️</button>
@@ -1735,7 +1827,7 @@
       let totalCones = 0;
 
       rawOrders.forEach(order => {
-        if (order.status !== 'Хүргэгдсэн') return;
+        if (order.status !== 'Хүргэгдсэн' && order.status !== 'Хэсэгчилсэн') return;
 
         totalRevenue += (order.total || 0);
         totalDeliveries += 1; // 1,000₮ delivery fee per order
