@@ -1043,6 +1043,7 @@
                 <select id="mapCupTank" onchange="calculateFinance()">
                   <option value="tank1" selected>1-р Бак (Ингэний хоормогтой)</option>
                   <option value="tank2">2-р Бак (Сүүн зайрмаг)</option>
+                  <option value="mixed">👥 Холимог (1 + 2-р бакны дундаж)</option>
                 </select>
               </div>
               <div class="form-group" style="margin-bottom: 0">
@@ -1050,12 +1051,14 @@
                 <select id="mapConeTank" onchange="calculateFinance()">
                   <option value="tank1">1-р Бак (Ингэний хоормогтой)</option>
                   <option value="tank2" selected>2-р Бак (Сүүн зайрмаг)</option>
+                  <option value="mixed">👥 Холимог (1 + 2-р бакны дундаж)</option>
                 </select>
               </div>
             </div>
 
             <div class="settings-section info-summary" style="margin-bottom: 0">
               <h4>📊 Тооцоолсон эцсийн өртөг (1ш):</h4>
+              <p><span>👥 Холимог түүхий эд (дундаж):</span> <strong id="unitCostRawMixed">₮0</strong></p>
               <p><span>🍨 Аягатай зайрмаг:</span> <strong id="unitCostCupTotal">₮0</strong></p>
               <p><span>🍦 Конус зайрмаг:</span> <strong id="unitCostConeTotal">₮0</strong></p>
             </div>
@@ -1701,15 +1704,25 @@
       // Бак тус бүрийн 1ш зайрмагны түүхий эдийн өртөг
       const rawCostTank1 = (costHoormog + costDryMilk1 + costWater) / yieldTank1;
       const rawCostTank2 = (costDryMilk2_1 + costDryMilk2_2) / yieldTank2;
+      const rawCostMixed = (rawCostTank1 + rawCostTank2) / 2;
 
       document.getElementById("unitCostRawTank1").textContent = `₮${Math.round(rawCostTank1).toLocaleString()}`;
       document.getElementById("unitCostRawTank2").textContent = `₮${Math.round(rawCostTank2).toLocaleString()}`;
+      document.getElementById("unitCostRawMixed").textContent = `₮${Math.round(rawCostMixed).toLocaleString()}`;
 
       // Эцсийн бүтээгдэхүүний өртөг (түүхий эд + аяга/конус + гялгар уут)
-      const rawCostCup = mapCupTank === "tank1" ? rawCostTank1 : rawCostTank2;
+      let rawCostCup = 0;
+      if (mapCupTank === "tank1") rawCostCup = rawCostTank1;
+      else if (mapCupTank === "tank2") rawCostCup = rawCostTank2;
+      else if (mapCupTank === "mixed") rawCostCup = rawCostMixed;
+      
       const unitCostCup = rawCostCup + costEmptyCup + costEmptyBag;
 
-      const rawCostCone = mapConeTank === "tank1" ? rawCostTank1 : rawCostTank2;
+      let rawCostCone = 0;
+      if (mapConeTank === "tank1") rawCostCone = rawCostTank1;
+      else if (mapConeTank === "tank2") rawCostCone = rawCostTank2;
+      else if (mapConeTank === "mixed") rawCostCone = rawCostMixed;
+
       const unitCostCone = rawCostCone + costEmptyCone + costEmptyBag;
 
       document.getElementById("unitCostCupTotal").textContent = `₮${Math.round(unitCostCup).toLocaleString()}`;
