@@ -756,6 +756,59 @@
       border: 1px solid rgba(90, 140, 90, 0.2);
     }
 
+    /* Advanced Finance Calculator styles */
+    .settings-section {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(212, 175, 55, 0.12);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .settings-section h4 {
+      font-size: 0.95rem;
+      color: var(--gold-light);
+      margin-top: 0;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 6px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 576px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .cost-summary-text {
+      margin-top: 6px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      background: rgba(212, 175, 55, 0.05);
+      padding: 6px 10px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .info-summary {
+      background: rgba(212, 175, 55, 0.04);
+      border: 1px dashed var(--border-gold);
+    }
+    .info-summary p {
+      font-size: 0.88rem;
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+    .info-summary p strong {
+      color: var(--gold-light);
+    }
+
     /* ===== MODAL ===== */
     .modal-overlay {
       position: fixed;
@@ -917,16 +970,95 @@
       <div id="viewFinance" style="display:none">
         <div class="finance-layout">
           <div class="finance-settings">
-            <h3>Өртөг Тохируулах</h3>
-            <div class="form-group">
-              <label for="costCup">Аяганы өртөг (1ш):</label>
-              <input type="number" id="costCup" value="1500" min="0" oninput="calculateFinance()">
+            <h3>⚙️ Өртөг Тохируулах (Бак & Орц)</h3>
+            
+            <div class="settings-section">
+              <h4>🐪 1-р Бак: Ингэний хоормогтой</h4>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="costHoormog">Ингэний хоормог (3л):</label>
+                  <input type="number" id="costHoormog" value="33000" min="0" oninput="calculateFinance()">
+                </div>
+                <div class="form-group">
+                  <label for="costDryMilk1">Хуурай сүү (1-р бак):</label>
+                  <input type="number" id="costDryMilk1" value="10000" min="0" oninput="calculateFinance()">
+                </div>
+                <div class="form-group">
+                  <label for="costWater">Савласан ус (5л):</label>
+                  <input type="number" id="costWater" value="3700" min="0" oninput="calculateFinance()">
+                </div>
+                <div class="form-group">
+                  <label list="yield" for="yieldTank1">Гарц (Ширхэг зайрмаг):</label>
+                  <input type="number" id="yieldTank1" value="80" min="1" oninput="calculateFinance()">
+                </div>
+              </div>
+              <div class="cost-summary-text">
+                🥛 Орцын өртөг (1ш): <strong id="unitCostRawTank1">₮0</strong>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="costCone">Конусны өртөг (1ш):</label>
-              <input type="number" id="costCone" value="1500" min="0" oninput="calculateFinance()">
+
+            <div class="settings-section">
+              <h4>🥛 2-р Бак: Сүүн зайрмаг</h4>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="costDryMilk2_1">Хуурай сүү (8.5к):</label>
+                  <input type="number" id="costDryMilk2_1" value="8500" min="0" oninput="calculateFinance()">
+                </div>
+                <div class="form-group">
+                  <label for="costDryMilk2_2">Хуурай сүү (10к):</label>
+                  <input type="number" id="costDryMilk2_2" value="10000" min="0" oninput="calculateFinance()">
+                </div>
+                <div class="form-group">
+                  <label for="yieldTank2">Гарц (Ширхэг зайрмаг):</label>
+                  <input type="number" id="yieldTank2" value="80" min="1" oninput="calculateFinance()">
+                </div>
+              </div>
+              <div class="cost-summary-text">
+                🥛 (2-р бак) Орцын өртөг (1ш): <strong id="unitCostRawTank2">₮0</strong>
+              </div>
             </div>
-            <p style="font-size:0.78rem; color:var(--text-muted)">* Энэхүү өртгийг ашиглан нийт хүргэгдсэн бүтээгдэхүүний ашгийг тооцоолно. Тохиргоо хөтөч дээр хадгалагдана.</p>
+
+            <div class="settings-section">
+              <h4>📦 Сав баглаа боодол</h4>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="costEmptyCup">Хоосон аяга + халбага:</label>
+                  <input type="number" id="costEmptyCup" value="200" min="0" oninput="calculateFinance()">
+                </div>
+                <div class="form-group">
+                  <label for="costEmptyCone">Хоосон конус:</label>
+                  <input type="number" id="costEmptyCone" value="200" min="0" oninput="calculateFinance()">
+                </div>
+                <div class="form-group" style="grid-column: span 2">
+                  <label for="costEmptyBag">Гялгар уут (Нэг бүрийн):</label>
+                  <input type="number" id="costEmptyBag" value="50" min="0" oninput="calculateFinance()">
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h4>🔗 Бакны тохиргоо (Маппинг)</h4>
+              <div class="form-group">
+                <label for="mapCupTank">Аяган зайрмагны сүүний бак:</label>
+                <select id="mapCupTank" onchange="calculateFinance()">
+                  <option value="tank1" selected>1-р Бак (Ингэний хоормогтой)</option>
+                  <option value="tank2">2-р Бак (Сүүн зайрмаг)</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 0">
+                <label for="mapConeTank">Конус зайрмагны сүүний бак:</label>
+                <select id="mapConeTank" onchange="calculateFinance()">
+                  <option value="tank1">1-р Бак (Ингэний хоормогтой)</option>
+                  <option value="tank2" selected>2-р Бак (Сүүн зайрмаг)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="settings-section info-summary" style="margin-bottom: 0">
+              <h4>📊 Тооцоолсон эцсийн өртөг (1ш):</h4>
+              <p><span>🍨 Аягатай зайрмаг:</span> <strong id="unitCostCupTotal">₮0</strong></p>
+              <p><span>🍦 Конус зайрмаг:</span> <strong id="unitCostConeTotal">₮0</strong></p>
+            </div>
           </div>
           
           <div class="finance-report">
@@ -1056,10 +1188,19 @@
         showAdminPanel();
       }
       
-      const savedCostCup = localStorage.getItem("costCup");
-      const savedCostCone = localStorage.getItem("costCone");
-      if (savedCostCup) document.getElementById("costCup").value = savedCostCup;
-      if (savedCostCone) document.getElementById("costCone").value = savedCostCone;
+      const keys = [
+        "costHoormog", "costDryMilk1", "costWater", "yieldTank1",
+        "costDryMilk2_1", "costDryMilk2_2", "yieldTank2",
+        "costEmptyCup", "costEmptyCone", "costEmptyBag",
+        "mapCupTank", "mapConeTank"
+      ];
+      keys.forEach(key => {
+        const val = localStorage.getItem(key);
+        if (val !== null) {
+          const el = document.getElementById(key);
+          if (el) el.value = val;
+        }
+      });
     };
 
     function handleLogin() {
@@ -1526,12 +1667,53 @@
 
     // ===== FINANCE: CALCULATIONS =====
     function calculateFinance() {
-      const costCup = parseFloat(document.getElementById("costCup").value) || 0;
-      const costCone = parseFloat(document.getElementById("costCone").value) || 0;
+      // 1-р Бак
+      const costHoormog = parseFloat(document.getElementById("costHoormog").value) || 0;
+      const costDryMilk1 = parseFloat(document.getElementById("costDryMilk1").value) || 0;
+      const costWater = parseFloat(document.getElementById("costWater").value) || 0;
+      const yieldTank1 = parseFloat(document.getElementById("yieldTank1").value) || 80;
+
+      // 2-р Бак
+      const costDryMilk2_1 = parseFloat(document.getElementById("costDryMilk2_1").value) || 0;
+      const costDryMilk2_2 = parseFloat(document.getElementById("costDryMilk2_2").value) || 0;
+      const yieldTank2 = parseFloat(document.getElementById("yieldTank2").value) || 80;
+
+      // Сав баглаа
+      const costEmptyCup = parseFloat(document.getElementById("costEmptyCup").value) || 0;
+      const costEmptyCone = parseFloat(document.getElementById("costEmptyCone").value) || 0;
+      const costEmptyBag = parseFloat(document.getElementById("costEmptyBag").value) || 0;
+
+      // Холболт (Маппинг)
+      const mapCupTank = document.getElementById("mapCupTank").value;
+      const mapConeTank = document.getElementById("mapConeTank").value;
 
       // Save to localStorage
-      localStorage.setItem("costCup", costCup);
-      localStorage.setItem("costCone", costCone);
+      const settings = {
+        costHoormog, costDryMilk1, costWater, yieldTank1,
+        costDryMilk2_1, costDryMilk2_2, yieldTank2,
+        costEmptyCup, costEmptyCone, costEmptyBag,
+        mapCupTank, mapConeTank
+      };
+      for (const [key, value] of Object.entries(settings)) {
+        localStorage.setItem(key, value);
+      }
+
+      // Бак тус бүрийн 1ш зайрмагны түүхий эдийн өртөг
+      const rawCostTank1 = (costHoormog + costDryMilk1 + costWater) / yieldTank1;
+      const rawCostTank2 = (costDryMilk2_1 + costDryMilk2_2) / yieldTank2;
+
+      document.getElementById("unitCostRawTank1").textContent = `₮${Math.round(rawCostTank1).toLocaleString()}`;
+      document.getElementById("unitCostRawTank2").textContent = `₮${Math.round(rawCostTank2).toLocaleString()}`;
+
+      // Эцсийн бүтээгдэхүүний өртөг (түүхий эд + аяга/конус + гялгар уут)
+      const rawCostCup = mapCupTank === "tank1" ? rawCostTank1 : rawCostTank2;
+      const unitCostCup = rawCostCup + costEmptyCup + costEmptyBag;
+
+      const rawCostCone = mapConeTank === "tank1" ? rawCostTank1 : rawCostTank2;
+      const unitCostCone = rawCostCone + costEmptyCone + costEmptyBag;
+
+      document.getElementById("unitCostCupTotal").textContent = `₮${Math.round(unitCostCup).toLocaleString()}`;
+      document.getElementById("unitCostConeTotal").textContent = `₮${Math.round(unitCostCone).toLocaleString()}`;
 
       // Calculations for delivered orders
       let totalRevenue = 0;
@@ -1553,7 +1735,7 @@
 
       const totalDeliveryIncome = totalDeliveries * 1000;
       const productNetSales = totalRevenue - totalDeliveryIncome;
-      const totalCost = (totalCups * costCup) + (totalCones * costCone);
+      const totalCost = (totalCups * unitCostCup) + (totalCones * unitCostCone);
       const netProfit = productNetSales - totalCost;
 
       // Render stats
@@ -1563,9 +1745,9 @@
       
       document.getElementById("finCupsQty").textContent = `${totalCups}ш`;
       document.getElementById("finConesQty").textContent = `${totalCones}ш`;
-      document.getElementById("finCostTotal").textContent = `₮${totalCost.toLocaleString()}`;
+      document.getElementById("finCostTotal").textContent = `₮${Math.round(totalCost).toLocaleString()}`;
       
-      document.getElementById("finProfit").textContent = `₮${netProfit.toLocaleString()}`;
+      document.getElementById("finProfit").textContent = `₮${Math.round(netProfit).toLocaleString()}`;
       
       if (netProfit < 0) {
         document.getElementById("finProfit").style.color = "var(--accent-rose)";
