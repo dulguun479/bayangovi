@@ -1172,6 +1172,13 @@
       <h3 class="modal-title">➕ Захиалга гараар бүртгэх</h3>
       <form id="addOrderForm" onsubmit="submitManualOrder(event)">
         <div class="form-group">
+          <label for="mChannel">Борлуулалтын суваг</label>
+          <select id="mChannel" onchange="toggleManualDeliveryFields(this.value)">
+            <option value="delivery" selected>Хүргэлтээр 🚚 (Хүргэлтийн 1,000₮-тэй)</option>
+            <option value="walkin">Машин дээрээс / Биеэр 🍦 (Хүргэлтгүй 0₮)</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="mName">Захиалагчийн нэр *</label>
           <input type="text" id="mName" required placeholder="Жишээ: Басбиш / Дэлгүүр">
         </div>
@@ -1387,6 +1394,7 @@
     // Submit manual/offline order
     async function submitManualOrder(event) {
       event.preventDefault();
+      const channel = document.getElementById("mChannel").value;
       const name = document.getElementById("mName").value;
       const phone = document.getElementById("mPhone").value;
       const address = document.getElementById("mAddress").value;
@@ -1405,7 +1413,9 @@
       const priceVanilla = orderType === 'wholesale' ? 2500 : 3000;
       const priceCone = orderType === 'wholesale' ? 2500 : 3000;
       const subtotal = qtyCup * priceVanilla + qtyCone * priceCone;
-      const grandTotal = subtotal + 1000; // Adding 1,000₮ delivery fee
+      
+      const deliveryFee = channel === 'walkin' ? 0 : 1000;
+      const grandTotal = subtotal + deliveryFee;
       
       const orderCode = 'БГ-М' + Date.now().toString().slice(-5);
 
@@ -1418,6 +1428,7 @@
           orderType: orderType,
           payment: payment,
           note: note,
+          deliveryFee: deliveryFee,
           items: {
             vanillaCup: { qty: qtyCup, topping: 'none' },
             coneIcecream: { qty: qtyCone, topping: 'none' }
@@ -1428,10 +1439,39 @@
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
         
+        // Reset form fields
+        document.getElementById("addOrderForm").reset();
+        toggleManualDeliveryFields('delivery'); // reset inputs state
+        
         closeAddOrderModal();
         alert(`✅ Захиалга амжилттай бүртгэгдлээ. Код: ${orderCode}`);
       } catch (e) {
         alert("Захиалга хадгалахад алдаа гарлаа: " + e.message);
+      }
+    }
+
+    function toggleManualDeliveryFields(value) {
+      const isWalkin = value === 'walkin';
+      const nameInput = document.getElementById("mName");
+      const phoneInput = document.getElementById("mPhone");
+      const addressInput = document.getElementById("mAddress");
+
+      if (isWalkin) {
+        nameInput.value = "Биеэр авсан";
+        phoneInput.value = "-";
+        addressInput.value = "Машин дээрээс";
+        
+        nameInput.disabled = true;
+        phoneInput.disabled = true;
+        addressInput.disabled = true;
+      } else {
+        nameInput.value = "";
+        phoneInput.value = "";
+        addressInput.value = "";
+        
+        nameInput.disabled = false;
+        phoneInput.disabled = false;
+        addressInput.disabled = false;
       }
     }
 
@@ -1822,7 +1862,7 @@
 
       // Calculations for delivered orders
       let totalRevenue = 0;
-      let totalDeliveries = 0;
+      let totalDeliveryIncome = 0;
       let totalCups = 0;
       let totalCones = 0;
 
@@ -1830,7 +1870,10 @@
         if (order.status !== 'Хүргэгдсэн' && order.status !== 'Хэсэгчилсэн') return;
 
         totalRevenue += (order.total || 0);
-        totalDeliveries += 1; // 1,000₮ delivery fee per order
+        
+        // Sum actual delivery fee (default to 1000 for website/older orders)
+        const dFee = (order.deliveryFee !== undefined) ? order.deliveryFee : 1000;
+        totalDeliveryIncome += dFee;
 
         if (order.items) {
           totalCups += (order.items.q1 || order.items.vanillaCup?.qty || 0);
@@ -1838,7 +1881,6 @@
         }
       });
 
-      const totalDeliveryIncome = totalDeliveries * 1000;
       const productNetSales = totalRevenue - totalDeliveryIncome;
       const totalCost = (totalCups * unitCostCup) + (totalCones * unitCostCone);
       const netProfit = productNetSales - totalCost;
