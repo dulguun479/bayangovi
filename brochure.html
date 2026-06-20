@@ -270,7 +270,7 @@
       border-top: 2px solid var(--primary-gold);
       padding-top: 20px;
       display: grid;
-      grid-template-columns: 1.8fr 1.1fr 1.1fr;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
       gap: 20px;
       align-items: center;
     }
@@ -311,51 +311,73 @@
     .badge-mnas { background: #e0f2f1; color: #004d40; border: 1px solid #b2dfdb; }
     .badge-made { background: #efebe9; color: #4e342e; border: 1px solid #d7ccc8; }
 
-    .code-box {
-      text-align: center;
+    /* Shaped Badges for Codes */
+    .creative-code-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #white;
-      padding: 10px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      background-color: #fff;
     }
-    
-    .code-box img {
-      width: 90px;
-      height: 90px;
-      object-fit: contain;
+
+    .camel-qr-badge {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.06));
       margin-bottom: 6px;
+      transition: all 0.3s;
     }
-    
+    .camel-qr-badge:hover {
+      transform: translateY(-3px) scale(1.03);
+    }
+    .camel-qr-badge .badge-bg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .camel-qr-badge .badge-code-img {
+      position: absolute;
+      top: 50%;
+      left: 58%;
+      transform: translate(-50%, -50%);
+      width: 44%;
+      height: 44%;
+      object-fit: contain;
+    }
+
+    .icecream-barcode-badge {
+      position: relative;
+      width: 110px;
+      height: 100px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.06));
+      margin-bottom: 6px;
+      transition: all 0.3s;
+    }
+    .icecream-barcode-badge:hover {
+      transform: translateY(-3px) scale(1.03);
+    }
+    .icecream-barcode-badge .badge-bg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .icecream-barcode-badge .badge-code-img {
+      position: absolute;
+      top: 72%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 72%;
+      height: 32%;
+      object-fit: fill;
+    }
+
     .code-label {
       font-size: 0.68rem;
       font-weight: 600;
       color: #666;
       line-height: 1.2;
-    }
-
-    .barcode-box {
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: #fff;
-      padding: 10px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-    }
-    
-    .barcode-box img {
-      width: 110px;
-      height: auto;
-      max-height: 80px;
-      object-fit: contain;
-      margin-bottom: 6px;
+      margin-top: 4px;
     }
   </style>
 </head>
@@ -369,9 +391,10 @@
 
   <div class="brochure-page">
     <!-- Header -->
-    <div class="header">
-      <h1 class="brand-title">САЙХАН ГОВЬ</h1>
-      <div class="brand-subtitle">Исгэлэн өвөрмөц амттай ингэний хоормогтой зайрмаг</div>
+    <div class="header" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
+      <img src="facebook_assets/fb_profile.png" alt="Сайхан Говь Logo" style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--primary-gold); object-fit: cover;">
+      <h1 class="brand-title" style="margin-bottom: 0; line-height: 1.1;">САЙХАН ГОВЬ</h1>
+      <div class="brand-subtitle">Ингэний хоормогтой зайрмаг — Эрүүл мэндэд тустай, өвөрмөц сайхан амттай</div>
     </div>
 
     <!-- Hero Banner -->
@@ -394,11 +417,11 @@
           <div>
             <img src="camel_icecream_cup.png?v=4" alt="Ингэний хоормогтой зайрмаг" class="product-img">
             <h3 class="product-name">Ингэний хоормогтой зайрмаг</h3>
-            <p class="product-desc">Өмнөговийн ингэний хоормогоор хийсэн, исгэлэн өвөрмөц гоё амттай аяган зайрмаг. Гүзээлзгэнэ болон шоколадны сүмстэй.</p>
+            <p class="product-desc">Өмнөговийн ингэний хоормогоор хийсэн, хоормогны өвөрмөц гоё амттай аяган зайрмаг. Гүзээлзгэнэ болон шоколадны сүмстэй.</p>
           </div>
           <div class="product-price-box">
             <div>
-              <div class="price-tag">₮3,000</div>
+              <div class="price-tag">₮3,500</div>
               <div class="wholesale-tag">Бөөний үнэ: ₮2,500</div>
             </div>
           </div>
@@ -409,11 +432,11 @@
           <div>
             <img src="cone_product_hero.png?v=4" alt="Конус зайрмаг" class="product-img">
             <h3 class="product-name">Ингэний хоормогтой конус зайрмаг</h3>
-            <p class="product-desc">Нэрс, гүзээлзгэнэ, шоколад сүмстэй, зөөлөн конус зайрмаг. Говийн халуун нарны доор сэрүүцүүлэх исгэлэн амттай.</p>
+            <p class="product-desc">Нэрс, гүзээлзгэнэ, шоколад сүмстэй, зөөлөн конус зайрмаг. Говийн халуун нарны доор сэрүүцүүлэх өвөрмөц сайхан амттай.</p>
           </div>
           <div class="product-price-box">
             <div>
-              <div class="price-tag">₮3,000</div>
+              <div class="price-tag">₮3,500</div>
               <div class="wholesale-tag">Бөөний үнэ: ₮2,500</div>
             </div>
           </div>
@@ -421,24 +444,25 @@
       </div>
     </div>
 
-    <!-- Benefits -->
+    <!-- Scientific Breakdown -->
     <div>
-      <div class="section-title">Органик чанар & Эрүүл мэнд</div>
-      <div class="benefits-strip">
-        <div class="benefit-item">
-          <div class="icon">💪</div>
-          <h4>Дархлаа дэмжинэ</h4>
-          <p>С витаминаар баялаг, тэмээний сүүний инсулин төст уургуудтай</p>
+      <div class="section-title">Шинжлэх ухааны баримт & ашиг тус (Fermented Camel Milk Study)</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;">
+        <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; display: flex; flex-direction: column; justify-content: center;">
+          <h4 style="font-size: 0.78rem; color: var(--dark-gold); font-weight: bold; margin-bottom: 4px;">🍬 Инсулин төст уураг (Сахарын зохицуулалт)</h4>
+          <p style="font-size: 0.68rem; line-height: 1.4; color: #555;">Ингэний сүүнд ходоодны хүчилд задардаггүй <em>инсулин төст уураг</em> (insulin-like protein) агуулагддаг тул цусан дахь сахарын хэмжээг тогтворжуулж, чихрийн шижингийн эрсдэлийг бууруулахад тусалдаг.</p>
         </div>
-        <div class="benefit-item">
-          <div class="icon">🌿</div>
-          <h4>Лактоз бага</h4>
-          <p>Ходоод гэдсэнд зөөлөн бөгөөд амархан шингэдэг ашиг тустай</p>
+        <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; display: flex; flex-direction: column; justify-content: center;">
+          <h4 style="font-size: 0.78rem; color: var(--dark-gold); font-weight: bold; margin-bottom: 4px;">🌿 Харшил үүсгэхгүй (Hypoallergenic)</h4>
+          <p style="font-size: 0.68rem; line-height: 1.4; color: #555;">Үнээний сүүний гол харшил үүсгэгч бета-лактоглобулин уураг байхгүйг эрдэмтэн Р.Ягилын судалгаагаар нотолсон. Сүүний харшилтай болон лактоз үл тэвчих хүмүүст 100% аюулгүй.</p>
         </div>
-        <div class="benefit-item">
-          <div class="icon">✅</div>
-          <h4>MNAS Баталгаатай</h4>
-          <p>Улсын итгэмжлэгдсэн лабораториор шинжлэгдсэн гэрчилгээтэй</p>
+        <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; display: flex; flex-direction: column; justify-content: center;">
+          <h4 style="font-size: 0.78rem; color: var(--dark-gold); font-weight: bold; margin-bottom: 4px;">🛡️ Лактоферрин & Иммуноглобулин (Дархлааны зэвсэг)</h4>
+          <p style="font-size: 0.68rem; line-height: 1.4; color: #555;">Нян, вирус, үрэвслийн эсрэг үйлчилгээтэй <em>Лактоферрин</em> (Lactoferrin) болон <em>Иммуноглобулин</em> уургуудаар асар баялаг тул байгалийн хүчтэй дархлаа хамгаалагч болдог.</p>
+        </div>
+        <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; display: flex; flex-direction: column; justify-content: center;">
+          <h4 style="font-size: 0.78rem; color: var(--dark-gold); font-weight: bold; margin-bottom: 4px;">🦠 Амьд Пробиотик (Lactobacillus)</h4>
+          <p style="font-size: 0.68rem; line-height: 1.4; color: #555;">Хоормогийг исгэх явцад гэдэсний бичил орчинг эрүүлжүүлэгч сүүн хүчлийн бактериуд (Lactobacillus) асар ихээр үүсдэг бөгөөд зайрмагны хөлдүү орчинд ч амьд үлддэг.</p>
         </div>
       </div>
     </div>
@@ -446,25 +470,38 @@
     <!-- Footer / Codes -->
     <div class="brochure-footer">
       <div class="contact-details">
-        <div class="contact-title">Сайхан Говь Авдар Алт ХХК</div>
-        <div class="contact-item">📞 Утас: 9496-8379, 9902-0609</div>
+        <div class="contact-title">Сайхан Говийн Авдар Алт Консалтинг ХХК</div>
+        <div class="contact-item">📞 Утас: 9902-0609, 9496-8379</div>
         <div class="contact-item">📍 Байршил: Даланзадгад хот, Өмнөговь аймаг</div>
         <div class="contact-item">✉️ Email: dolgoonoo473@gmail.com</div>
+        <div class="contact-item">🌐 Facebook: fb.com/profile.php?id=61590837030135</div>
         <div class="badge-wrap">
           <span class="badge-item badge-mnas">✅ MNAS №26-318</span>
           <span class="badge-item badge-made">🇲🇳 Монголд Үйлдвэрлэв</span>
         </div>
       </div>
 
-      <!-- QR Code (Website) -->
-      <div class="code-box">
-        <img src="qr_code.png" alt="QR Code">
-        <div class="code-label">Захиалга өгөх вэбсайт хаяг</div>
+      <!-- QR Code (Website) - Clean Rectangular for 100% Scanability -->
+      <div class="creative-code-wrapper">
+        <div style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.06)); overflow: hidden; position: relative; margin-bottom: 6px;">
+          <img src="qr_code.png" alt="Website QR" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+        </div>
+        <div class="code-label">Захиалга өгөх вэбсайт</div>
       </div>
 
-      <!-- Barcode (Product EAN-13) -->
-      <div class="barcode-box">
-        <img src="barcode_cup.png" alt="Barcode">
+      <!-- QR Code (Facebook Page) - Clean Rectangular for 100% Scanability -->
+      <div class="creative-code-wrapper">
+        <div style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.06)); overflow: hidden; position: relative; margin-bottom: 6px;">
+          <img src="qr_facebook.png" alt="Facebook QR" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+        </div>
+        <div class="code-label">Манай Facebook хуудас</div>
+      </div>
+
+      <!-- Barcode (Product EAN-13) - Clean Rectangular for 100% Scanability -->
+      <div class="creative-code-wrapper">
+        <div style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.06)); overflow: hidden; position: relative; margin-bottom: 6px;">
+          <img src="barcode_cup.png" alt="Barcode" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+        </div>
         <div class="code-label">Бүтээгдэхүүний код EAN-13</div>
       </div>
     </div>

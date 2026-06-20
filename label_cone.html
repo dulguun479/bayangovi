@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <title>Сайхан Говь - Конус Боолт Хэвлэх Эх (Cone Wrapper)</title>
+  <style>
+    :root {
+      --primary-gold: #c5a880;
+      --dark-gold: #8f724d;
+      --text-dark: #2c2520;
+      --bg-cream: #faf7f2;
+      --border-color: #e6dfd3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f0ebe4;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Print Specifics */
+    @media print {
+      body {
+        background: none !important;
+        padding: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-page {
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        background: #fff !important;
+      }
+    }
+
+    /* Floating control bar */
+    .control-panel {
+      background: rgba(0, 0, 0, 0.88);
+      padding: 15px 30px;
+      border-radius: 40px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
+    }
+    
+    .panel-btn {
+      background: var(--primary-gold);
+      color: #000;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+    }
+    .panel-btn:hover {
+      background: #dfc39e;
+      transform: translateY(-2px);
+    }
+    .panel-btn.secondary {
+      background: transparent;
+      color: #fff;
+      border: 2px solid var(--primary-gold);
+    }
+    .panel-btn.secondary:hover {
+      background: rgba(197, 168, 128, 0.15);
+    }
+    .panel-info {
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    /* A4 Print Page Container */
+    .print-page {
+      background: #fff;
+      width: 794px; /* A4 width at 96dpi */
+      height: 1123px; /* A4 height at 96dpi */
+      padding: 40px 30px;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .print-header {
+      font-size: 0.85rem;
+      color: #777;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    /* Sleeve Grid Layout for A4 (fits 3 sleeves vertically/angled) */
+    .sleeves-container {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      align-items: center;
+      width: 100%;
+      flex-grow: 1;
+      justify-content: center;
+    }
+
+    /* Cone Wrapper sector-shaped box */
+    .cone-sleeve {
+      width: 320px;
+      height: 230px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* Sector cutting line using SVG background */
+    .cone-sleeve-outline {
+      width: 100%;
+      height: 100%;
+      border: 1.5px dashed #bbb;
+      border-radius: 200px 200px 0 0; /* Curved top */
+      clip-path: polygon(50% 100%, 0% 0%, 100% 0%); /* Triangular slice shape */
+      background-color: var(--bg-cream);
+      box-shadow: 0 0 10px rgba(0,0,0,0.03);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 15px;
+    }
+
+    /* Inner gold border inside clip-path */
+    .cone-inner-border {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      border: 1px double var(--primary-gold);
+      border-radius: 195px 195px 0 0;
+      clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+      pointer-events: none;
+    }
+
+    .cone-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1.5px solid var(--primary-gold);
+      object-fit: cover;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      z-index: 10;
+    }
+
+    .cone-brand {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--dark-gold);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      z-index: 10;
+      margin-bottom: 2px;
+    }
+
+    .cone-subtitle {
+      font-size: 0.52rem;
+      font-weight: bold;
+      color: #6d5b4b;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      z-index: 10;
+      margin-bottom: 5px;
+    }
+
+    .cone-text {
+      font-size: 0.44rem;
+      color: #555;
+      max-width: 160px;
+      text-align: center;
+      line-height: 1.2;
+      z-index: 10;
+      margin-bottom: 6px;
+    }
+
+    .cone-footer {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      margin-top: 4px;
+    }
+
+    .cone-code-badge {
+      position: relative;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cone-footer .qr-badge {
+      width: 28px;
+      height: 28px;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.05));
+    }
+
+    .cone-footer .barcode-badge {
+      width: 38px;
+      height: 28px;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.05));
+    }
+
+    .cone-code-badge .badge-bg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .cone-footer .qr-badge .badge-code-img {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44%;
+      height: 44%;
+      object-fit: contain;
+    }
+
+    .cone-footer .barcode-badge .badge-code-img {
+      position: absolute;
+      top: 72%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 72%;
+      height: 32%;
+      object-fit: fill;
+    }
+
+    .cone-meta {
+      font-size: 0.38rem;
+      color: #777;
+      margin-top: 2px;
+      z-index: 10;
+    }
+
+    /* Single view mode (flat sector enlarged) */
+    .single-preview-container {
+      display: none;
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+      align-items: center;
+      flex-direction: column;
+      border: 1px solid var(--border-color);
+    }
+
+    .single-preview-container.active {
+      display: flex;
+    }
+
+    .single-preview-container .cone-sleeve {
+      width: 550px;
+      height: 400px;
+    }
+
+    .single-preview-container .cone-sleeve-outline {
+      border-radius: 350px 350px 0 0;
+      padding-top: 30px;
+    }
+
+    .single-preview-container .cone-inner-border {
+      border-radius: 340px 340px 0 0;
+    }
+
+    .single-preview-container .cone-logo {
+      width: 75px;
+      height: 75px;
+      margin-bottom: 10px;
+    }
+
+    .single-preview-container .cone-brand {
+      font-size: 1.9rem;
+      letter-spacing: 3px;
+      margin-bottom: 5px;
+    }
+
+    .single-preview-container .cone-subtitle {
+      font-size: 0.9rem;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+
+    .single-preview-container .cone-text {
+      font-size: 0.8rem;
+      max-width: 260px;
+      line-height: 1.4;
+      margin-bottom: 15px;
+    }
+
+    .single-preview-container .cone-footer {
+      gap: 20px;
+      margin-top: 8px;
+    }
+    .single-preview-container .qr-badge {
+      width: 65px;
+      height: 65px;
+    }
+    .single-preview-container .qr-rect-badge {
+      width: 65px !important;
+      height: 65px !important;
+      border-width: 2px !important;
+      border-radius: 6px !important;
+      padding: 5px !important;
+    }
+    .single-preview-container .barcode-badge {
+      width: 85px;
+      height: 65px;
+    }
+
+    .single-preview-container .cone-meta {
+      font-size: 0.7rem;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Controls (Hidden during print) -->
+  <div class="control-panel no-print">
+    <span class="panel-info" id="modeInfo">Одоогийн харагдац: А4 хуудсаар хэвлэх (3ш конус боолт)</span>
+    <button class="panel-btn secondary" id="btnToggle" onclick="toggleView()">🔎 Нэгээр томруулж харах</button>
+    <button class="panel-btn" onclick="window.print()">🖨️ Хэвлэх / PDF хадгалах</button>
+  </div>
+
+  <!-- A4 Print Layout Container -->
+  <div class="print-page" id="a4Page">
+    <div class="print-header">
+      Сайхан Говь - Конусын боолт зүсэж бэлтгэх хуудас (А4 дээр 3 ширхэг сүлжээтэй)
+    </div>
+    <div class="sleeves-container">
+      <!-- Sleeve 1 -->
+      <div class="cone-sleeve">
+        <div class="cone-sleeve-outline">
+          <div class="cone-inner-border"></div>
+          <img src="facebook_assets/fb_profile.png" alt="Logo" class="cone-logo">
+          <h1 class="cone-brand">САЙХАН ГОВЬ</h1>
+          <h2 class="cone-subtitle">Ингэний Хоормогтой Конус</h2>
+          <p class="cone-text">Өмнөговийн ингэний хоормогоор хийсэн органик зөөлөн зайрмаг. Даланзадгад хот.</p>
+          <div class="cone-footer">
+            <!-- Website QR Code Badge (Clean Rectangular for 100% Scanability) -->
+            <div class="cone-code-badge qr-rect-badge" style="background: #ffffff; border: 1px solid var(--primary-gold); border-radius: 3px; padding: 2px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+              <img src="qr_code.png" alt="Website QR" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+            </div>
+            <!-- Barcode Badge (Clean Rectangular for 100% Scanability) -->
+            <div class="cone-code-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 3px; padding: 2px; display: flex; align-items: center; justify-content: center; width: 44px; height: 32px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+              <img src="barcode_cup.png" alt="Barcode" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+            </div>
+          </div>
+          <div class="cone-meta">Утас: 9902-0609, 9496-8379 · fb.com/profile.php?id=61590837030135</div>
+        </div>
+      </div>
+
+      <!-- Sleeve 2 -->
+      <div class="cone-sleeve">
+        <div class="cone-sleeve-outline">
+          <div class="cone-inner-border"></div>
+          <img src="facebook_assets/fb_profile.png" alt="Logo" class="cone-logo">
+          <h1 class="cone-brand">САЙХАН ГОВЬ</h1>
+          <h2 class="cone-subtitle">Ингэний Хоормогтой Конус</h2>
+          <p class="cone-text">Өмнөговийн ингэний хоормогоор хийсэн органик зөөлөн зайрмаг. Даланзадгад хот.</p>
+          <div class="cone-footer">
+            <!-- Website QR Code Badge (Clean Rectangular for 100% Scanability) -->
+            <div class="cone-code-badge qr-rect-badge" style="background: #ffffff; border: 1px solid var(--primary-gold); border-radius: 3px; padding: 2px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+              <img src="qr_code.png" alt="Website QR" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+            </div>
+            <!-- Barcode Badge (Clean Rectangular for 100% Scanability) -->
+            <div class="cone-code-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 3px; padding: 2px; display: flex; align-items: center; justify-content: center; width: 44px; height: 32px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+              <img src="barcode_cup.png" alt="Barcode" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+            </div>
+          </div>
+          <div class="cone-meta">Утас: 9902-0609, 9496-8379 · fb.com/profile.php?id=61590837030135</div>
+        </div>
+      </div>
+
+      <!-- Sleeve 3 -->
+      <div class="cone-sleeve">
+        <div class="cone-sleeve-outline">
+          <div class="cone-inner-border"></div>
+          <img src="facebook_assets/fb_profile.png" alt="Logo" class="cone-logo">
+          <h1 class="cone-brand">САЙХАН ГОВЬ</h1>
+          <h2 class="cone-subtitle">Ингэний Хоормогтой Конус</h2>
+          <p class="cone-text">Өмнөговийн ингэний хоормогоор хийсэн органик зөөлөн зайрмаг. Даланзадгад хот.</p>
+          <div class="cone-footer">
+            <!-- Website QR Code Badge (Clean Rectangular for 100% Scanability) -->
+            <div class="cone-code-badge qr-rect-badge" style="background: #ffffff; border: 1px solid var(--primary-gold); border-radius: 3px; padding: 2px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+              <img src="qr_code.png" alt="Website QR" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+            </div>
+            <!-- Barcode Badge (Clean Rectangular for 100% Scanability) -->
+            <div class="cone-code-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 3px; padding: 2px; display: flex; align-items: center; justify-content: center; width: 44px; height: 32px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+              <img src="barcode_cup.png" alt="Barcode" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+            </div>
+          </div>
+          <div class="cone-meta">Утас: 9902-0609, 9496-8379 · fb.com/profile.php?id=61590837030135</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Single Large Preview Panel -->
+  <div class="single-preview-container" id="singleContainer">
+    <div class="cone-sleeve">
+      <div class="cone-sleeve-outline">
+        <div class="cone-inner-border"></div>
+        <img src="facebook_assets/fb_profile.png" alt="Logo" class="cone-logo">
+        <h1 class="cone-brand">САЙХАН ГОВЬ</h1>
+        <h2 class="cone-subtitle">Ингэний Хоормогтой Конус Зайрмаг</h2>
+        <p class="cone-text">Өмнөговь аймгийн Даланзадгад хотод ингэний хоормогоор гар аргаар урласан 100% органик зөөлөн конус зайрмаг. Сэрүүцүүлэх өвөрмөц сайхан амт.</p>
+        <div class="cone-footer">
+          <!-- Website QR Code Badge (Clean Rectangular for 100% Scanability) -->
+          <div class="cone-code-badge qr-rect-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center; width: 65px; height: 65px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+            <img src="qr_code.png" alt="Website QR" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+          </div>
+          <!-- Barcode Badge (Clean Rectangular for 100% Scanability) -->
+          <div class="cone-code-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center; width: 90px; height: 65px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+            <img src="barcode_cup.png" alt="Barcode" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+          </div>
+        </div>
+        <div class="cone-meta">Үйлдвэрлэгч: Сайхан Говийн Авдар Алт Консалтинг ХХК · Утас: 9902-0609, 9496-8379 · fb.com/profile.php?id=61590837030135 · MNAS №26-318</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isSingleView = false;
+    
+    function toggleView() {
+      isSingleView = !isSingleView;
+      const a4Page = document.getElementById('a4Page');
+      const singleContainer = document.getElementById('singleContainer');
+      const btnToggle = document.getElementById('btnToggle');
+      const modeInfo = document.getElementById('modeInfo');
+      
+      if (isSingleView) {
+        a4Page.style.display = 'none';
+        singleContainer.classList.add('active');
+        btnToggle.textContent = '📄 А4 хуудсаар харах (3ш)';
+        modeInfo.textContent = 'Одоогийн харагдац: Нэг бүрчлэн томруулж харах';
+      } else {
+        a4Page.style.display = 'flex';
+        singleContainer.classList.remove('active');
+        btnToggle.textContent = '🔎 Нэгээр томруулж харах';
+        modeInfo.textContent = 'Одоогийн харагдац: А4 хуудсаар хэвлэх (3ш конус боолт)';
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Inject overlays into QR badges
+      document.querySelectorAll(".qr-badge").forEach(badge => {
+        const overlay = document.createElement("div");
+        overlay.style.position = "absolute";
+        overlay.style.width = "22%";
+        overlay.style.height = "22%";
+        overlay.style.background = "white";
+        overlay.style.border = "1px solid var(--primary-gold)";
+        overlay.style.borderRadius = "50%";
+        overlay.style.display = "flex";
+        overlay.style.alignItems = "center";
+        overlay.style.justifyContent = "center";
+        overlay.style.padding = "1px";
+        overlay.style.boxShadow = "0 1px 3px rgba(0,0,0,0.15)";
+        
+        // Check if we are inside a cone sleeve (different top position)
+        if (badge.closest(".cone-sleeve")) {
+          overlay.style.top = "45%";
+          overlay.style.left = "50%";
+        } else {
+          overlay.style.top = "50%";
+          overlay.style.left = "58%";
+        }
+        overlay.style.transform = "translate(-50%, -50%)";
+        overlay.style.zIndex = "20";
+        
+        // Ice cream cone svg path inside website qr code
+        overlay.innerHTML = `
+          <svg viewBox="0 0 100 100" style="width: 80%; height: 80%; fill: var(--dark-gold);">
+            <path d="M 40,65 L 60,115 L 80,65 Z M 40,65 C 35,65 30,55 35,45 C 30,35 40,25 50,20 C 55,10 65,10 70,20 C 80,25 90,35 85,45 C 90,55 85,65 80,65 Z" />
+          </svg>
+        `;
+        badge.style.position = "relative";
+        badge.appendChild(overlay);
+      });
+
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <title>Сайхан Говь - Маркетингийн Постер (A4/A3 Poster)</title>
+  <style>
+    :root {
+      --primary-gold: #c5a880;
+      --dark-gold: #8f724d;
+      --text-dark: #2c2520;
+      --bg-cream: #faf7f2;
+      --border-color: #e6dfd3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #cccccc;
+      color: var(--text-dark);
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Poster Page container - A4 proportion for printing */
+    .poster-page {
+      background-color: var(--bg-cream);
+      width: 794px; /* A4 width in pixels at 96 DPI */
+      height: 1123px; /* A4 height in pixels at 96 DPI */
+      padding: 50px 45px;
+      position: relative;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.2);
+      border: 12px double var(--primary-gold);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .poster-page {
+        box-shadow: none;
+        margin: 0;
+        border: 12px double var(--primary-gold) !important;
+        width: 100%;
+        height: 100%;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    .print-control {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      padding: 12px 24px;
+      border-radius: 40px;
+      z-index: 1000;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    
+    .print-btn {
+      background: var(--primary-gold);
+      color: #000;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+    .print-btn:hover {
+      background: #dfc39e;
+    }
+    .print-info {
+      color: #fff;
+      font-size: 0.85rem;
+    }
+
+    /* Logo & Header */
+    .poster-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-img {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      border: 2px solid var(--primary-gold);
+      object-fit: cover;
+      margin-bottom: 8px;
+    }
+
+    .brand-title {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: var(--dark-gold);
+      letter-spacing: 3px;
+      line-height: 1.1;
+    }
+
+    .brand-subtitle {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      color: #7c6850;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    /* Hero section with Camel and Ice Cream overlay */
+    .hero-container {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      height: 340px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+    .hero-image-side {
+      width: 50%;
+      position: relative;
+    }
+
+    .hero-image-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-text-side {
+      width: 50%;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(135deg, #ffffff 0%, #faf8f5 100%);
+    }
+
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--dark-gold);
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+
+    .hero-p {
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: #555;
+    }
+
+    /* Content Layout (Benefits, Ingredients, Usage) */
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr 0.9fr;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--dark-gold);
+      border-bottom: 1.5px solid var(--primary-gold);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card-list li {
+      font-size: 0.76rem;
+      line-height: 1.45;
+      color: #444;
+    }
+
+    .card-list li strong {
+      color: var(--text-dark);
+    }
+
+    /* Footer structure with badges and scans */
+    .poster-footer {
+      border-top: 2.5px solid var(--primary-gold);
+      padding-top: 22px;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .company-name {
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--dark-gold);
+      text-transform: uppercase;
+    }
+
+    .contact-line {
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-container {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+    .badge-mnas { background: #e0f2f1; color: #004d40; border: 1px solid #b2dfdb; }
+    .badge-made { background: #efebe9; color: #4e342e; border: 1px solid #d7ccc8; }
+
+    /* Clean scan badges matching EAN-13 */
+    .scan-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .scan-box {
+      background: #ffffff;
+      border: 1.5px solid var(--primary-gold);
+      border-radius: 6px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));
+      overflow: hidden;
+      margin-bottom: 6px;
+      transition: transform 0.2s;
+    }
+
+    .scan-box:hover {
+      transform: scale(1.03);
+    }
+
+    .scan-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .scan-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: #666;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Print Controls (hidden in print) -->
+  <div class="print-control no-print">
+    <span class="print-info">Маркетингийн постер (А4 хэвлэх бэлэн эх)</span>
+    <button class="print-btn" onclick="window.print()">🖨️ Хэвлэх / PDF хадгалах</button>
+  </div>
+
+  <div class="poster-page">
+    
+    <!-- Poster Header -->
+    <div class="poster-header">
+      <img src="facebook_assets/fb_profile.png" alt="Сайхан Говь Logo" class="logo-img">
+      <h1 class="brand-title">САЙХАН ГОВЬ</h1>
+      <div class="brand-subtitle">Ингэний Хоормогтой Зайрмаг</div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-container">
+      <div class="hero-image-side">
+        <img src="camel_gobi.png?v=4" alt="Говийн тэмээ">
+      </div>
+      <div class="hero-text-side">
+        <h2 class="hero-headline">🏜️ Өмнөговийн гайхамшигт сүүн амттан</h2>
+        <p class="hero-p">Ингэний хоормогоор гар аргаар урласан, 100% байгалийн цэвэр бөгөөд органик бүтээгдэхүүн. Говийн халуунд сэрүүцүүлж, биеийг эрүүлжүүлэх шидэт шим тэжээлийг танд зориулав.</p>
+      </div>
+    </div>
+
+    <!-- Info Cards Section -->
+    <div class="details-grid">
+      
+      <!-- Card 1: Health Benefits -->
+      <div class="card">
+        <h3 class="card-title">💪 Шинжлэх ухааны ашиг тус</h3>
+        <ul class="card-list" style="font-size: 0.68rem; line-height: 1.35; color: #444; list-style: none; display: flex; flex-direction: column; gap: 8px;">
+          <li><strong>🍬 Инсулин төст уураг:</strong> Цусан дахь сахарыг тогтворжуулж, чихрийн шижингийн эрсдэлийг бууруулахад туслах инсулин төст байгалийн уургийг агуулдаг.</li>
+          <li><strong>🌿 Харшил үүсгэхгүй (Hypoallergenic):</strong> Харшил үүсгэгч бета-лактоглобулин уураг байхгүйг нотолсон тул сүүний харшилтай болон лактоз үл тэвчих хүмүүст 100% аюулгүй.</li>
+          <li><strong>🛡️ Лактоферрин & Пробиотик:</strong> Дархлааг онцгой дэмжих лактоферрин уураг болон гэдэсний ашигтай бактерийг (Lactobacillus) асар ихээр агуулдаг.</li>
+        </ul>
+      </div>
+
+      <!-- Card 2: Ingredients -->
+      <div class="card">
+        <h3 class="card-title">🌿 Орц найрлага</h3>
+        <ul class="card-list">
+          <li><strong>Үндсэн орц:</strong> Ингэний сүүний цэвэр хоормог (Өмнөговийн түүхий эд).</li>
+          <li><strong>Амт оруулагч:</strong> Зайрмагны хуурай бэлдэц, амтат сүмснүүд.</li>
+          <li><strong>Нэмэлт сүмс:</strong> Гүзээлзгэнэ, шоколад, нэрс.</li>
+          <li>❌ Хиймэл будагч бодис болон консервант ороогүй.</li>
+        </ul>
+      </div>
+
+      <!-- Card 3: Storage & Expiry -->
+      <div class="card">
+        <h3 class="card-title">❄️ Хэрэглээ & Хадгалалт</h3>
+        <ul class="card-list">
+          <li><strong>Хэрэглэх заавар:</strong> Хөлдөөгчнөөс гарган шууд хэрэглэнэ. Хүүхэд, залуучууд болон ахмадуудын өдөр тутмын дархлаа дэмжих амттан.</li>
+          <li><strong>Хадгалах хугацаа:</strong> Хөлдөөгчинд <strong>(-18°C болон түүнээс доош)</strong> үйлдвэрлэсэн хугацаанаас хойш <strong>6 сар</strong> хадгална.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Poster Footer -->
+    <div class="poster-footer">
+      <div class="footer-left">
+        <div class="company-name">Сайхан Говийн Авдар Алт Консалтинг ХХК</div>
+        <div class="contact-line">📞 Захиалгын утас: 9902-0609, 9496-8379</div>
+        <div class="contact-line">📍 Даланзадгад хот, Өмнөговь аймаг</div>
+        <div class="contact-line">✉️ Email: dolgoonoo473@gmail.com</div>
+        <div class="contact-line">🌐 Facebook: facebook.com/profile.php?id=61590837030135</div>
+        <div class="badge-container">
+          <span class="badge badge-mnas">✅ MNAS №26-318</span>
+          <span class="badge badge-made">🇲🇳 Монголд Үйлдвэрлэв</span>
+        </div>
+      </div>
+
+      <!-- Website QR -->
+      <div class="scan-wrapper">
+        <div class="scan-box">
+          <img src="qr_code.png" alt="Website QR">
+        </div>
+        <div class="scan-label">Захиалга өгөх вэбсайт</div>
+      </div>
+
+      <!-- Facebook QR -->
+      <div class="scan-wrapper">
+        <div class="scan-box">
+          <img src="qr_facebook.png" alt="Facebook QR">
+        </div>
+        <div class="scan-label">Манай Facebook хуудас</div>
+      </div>
+
+      <!-- EAN-13 Barcode -->
+      <div class="scan-wrapper">
+        <div class="scan-box">
+          <img src="barcode_cup.png" alt="EAN-13 Barcode">
+        </div>
+        <div class="scan-label">Бүтээгдэхүүний код</div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

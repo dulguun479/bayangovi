@@ -107,8 +107,8 @@ let cartItems = [];
 let isWholesale = false;
 
 const productPrices = {
-  'Ингэний хоормогтой зайрмаг': { retail: 3000, wholesale: 2500 },
-  'Конус зайрмаг': { retail: 3000, wholesale: 2500 }
+  'Ингэний хоормогтой зайрмаг': { retail: 3500, wholesale: 2500 },
+  'Конус зайрмаг': { retail: 3500, wholesale: 2500 }
 };
 
 function togglePrices(checked) {
@@ -501,10 +501,16 @@ const storeMapUrls = [
   "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2791.9056262423377!2d104.413812!3d43.57864835824578!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165b42d38589ab%3A0x7d6f5fb843a0e6ad!2sCentral%20Square%20Dalanzadgad!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn",
   // 3. Jargalant District Dalanzadgad (Local Market)
   "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2792.1156262423377!2d104.4172!3d43.5705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165ab50cf585df%3A0xc3cf9069d3012877!2sDalanzadgad%2C%20Mongolia!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn",
-  // 4. Coming Soon: Tavan bogd
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27918.571439778233!2d104.3845!3d43.5786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165ab50cf585df%3A0xc3cf9069d3012877!2sDalanzadgad%2C%20Mongolia!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn",
-  // 5. Coming Soon: Airport Road
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27918.571439778233!2d104.3845!3d43.5786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165ab50cf585df%3A0xc3cf9069d3012877!2sDalanzadgad%2C%20Mongolia!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn"
+  // 4. Оргил төв (Апу оргил)
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2791.9080000000000!2d104.40950000000000!3d43.578200000000000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165ab50cf585df%3A0xc3cf9069d3012877!2sDalanzadgad%2C%20Mongolia!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn",
+  // 5. Ундарга дэлгүүр (Оюут 6)
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2792.0500000000000!2d104.42510000000000!3d43.574200000000000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165ab50cf585df%3A0xc3cf9069d3012877!2sDalanzadgad%2C%20Mongolia!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn",
+  // 6. 3Mart (Хүнсний 3)
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2791.8900000000000!2d104.41820000000000!3d43.579500000000000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165ab50cf585df%3A0xc3cf9069d3012877!2sDalanzadgad%2C%20Mongolia!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn",
+  // 7. Баян Оргил (Оюут 8)
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2792.0800000000000!2d104.42650000000000!3d43.573100000000000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165ab50cf585df%3A0xc3cf9069d3012877!2sDalanzadgad%2C%20Mongolia!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn",
+  // 8. Хишэгдэлгэрэх (Оюут 2)
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2791.9800000000000!2d104.42150000000000!3d43.576100000000000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5e165ab50cf585df%3A0xc3cf9069d3012877!2sDalanzadgad%2C%20Mongolia!5e0!3m2!1sen!2smn!4v1718500000000!5m2!1sen!2smn"
 ];
 
 function selectStore(index) {

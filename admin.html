@@ -1409,9 +1409,9 @@
         return;
       }
 
-      // Calculate total price based on order type (retail: 3000, wholesale: 2500)
-      const priceVanilla = orderType === 'wholesale' ? 2500 : 3000;
-      const priceCone = orderType === 'wholesale' ? 2500 : 3000;
+      // Calculate total price based on order type (retail: 3500, wholesale: 2500)
+      const priceVanilla = orderType === 'wholesale' ? 2500 : 3500;
+      const priceCone = orderType === 'wholesale' ? 2500 : 3500;
       const subtotal = qtyCup * priceVanilla + qtyCone * priceCone;
       
       const deliveryFee = channel === 'walkin' ? 0 : 1000;

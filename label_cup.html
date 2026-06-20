@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <title>Сайхан Говь - Аяганы Шошиг Хэвлэх Эх (Cup Label)</title>
+  <style>
+    :root {
+      --primary-gold: #c5a880;
+      --dark-gold: #8f724d;
+      --text-dark: #2c2520;
+      --bg-cream: #faf7f2;
+      --border-color: #e6dfd3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f0ebe4;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Print Specifics */
+    @media print {
+      body {
+        background: none !important;
+        padding: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-page {
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        background: #fff !important;
+      }
+    }
+
+    /* Floating control bar */
+    .control-panel {
+      background: rgba(0, 0, 0, 0.88);
+      padding: 15px 30px;
+      border-radius: 40px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
+    }
+    
+    .panel-btn {
+      background: var(--primary-gold);
+      color: #000;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+    }
+    .panel-btn:hover {
+      background: #dfc39e;
+      transform: translateY(-2px);
+    }
+    .panel-btn.secondary {
+      background: transparent;
+      color: #fff;
+      border: 2px solid var(--primary-gold);
+    }
+    .panel-btn.secondary:hover {
+      background: rgba(197, 168, 128, 0.15);
+    }
+    .panel-info {
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    /* A4 Print Page Container */
+    .print-page {
+      background: #fff;
+      width: 794px; /* A4 width at 96dpi */
+      height: 1123px; /* A4 height at 96dpi */
+      padding: 30px;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Label Grid Layout for A4 (12 labels, 3 columns x 4 rows) */
+    .labels-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 25px 20px;
+      justify-items: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Circular Label Sticker Design */
+    .sticker-label {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 4px double var(--primary-gold);
+      background-color: var(--bg-cream);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    /* Sticker outer circle for cutting guide */
+    .sticker-label::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      border-radius: 50%;
+      border: 1px dashed #bbb;
+      pointer-events: none;
+    }
+
+    .sticker-header {
+      margin-top: 2px;
+    }
+
+    .sticker-logo-img {
+      width: 38px;
+      height: 38px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 1.5px solid var(--primary-gold);
+      margin-bottom: 2px;
+    }
+
+    .sticker-brand {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--dark-gold);
+      letter-spacing: 1.5px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .sticker-title {
+      font-size: 0.58rem;
+      font-weight: bold;
+      color: #5a4b3d;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 2px;
+    }
+
+    .sticker-ingredients {
+      font-size: 0.44rem;
+      color: #444;
+      line-height: 1.2;
+      max-width: 180px;
+      border-top: 1px solid rgba(197, 168, 128, 0.3);
+      border-bottom: 1px solid rgba(197, 168, 128, 0.3);
+      padding: 3px 0;
+      margin: 1px 0;
+    }
+
+    .sticker-meta {
+      font-size: 0.42rem;
+      color: #666;
+      line-height: 1.2;
+    }
+
+    .sticker-codes-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+
+    .sticker-code-badge {
+      position: relative;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .barcode-badge {
+      width: 60px;
+      height: 52px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+    }
+
+    .qr-badge {
+      width: 52px;
+      height: 52px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+    }
+
+    .sticker-code-badge .badge-bg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .barcode-badge .badge-code-img {
+      position: absolute;
+      top: 72%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 72%;
+      height: 32%;
+      object-fit: fill;
+    }
+
+    .qr-badge .badge-code-img {
+      position: absolute;
+      top: 50%;
+      left: 58%;
+      transform: translate(-50%, -50%);
+      width: 44%;
+      height: 44%;
+      object-fit: contain;
+    }
+
+    .sticker-bottom-text {
+      font-size: 0.38rem;
+      color: #777;
+      font-weight: 500;
+    }
+
+    .sticker-weight {
+      position: absolute;
+      right: 22px;
+      top: 40px;
+      font-size: 0.48rem;
+      font-weight: bold;
+      color: var(--dark-gold);
+      background: rgba(197,168,128,0.15);
+      padding: 1px 4px;
+      border-radius: 3px;
+      transform: rotate(15deg);
+    }
+
+    .sticker-cert {
+      position: absolute;
+      left: 18px;
+      top: 40px;
+      font-size: 0.42rem;
+      font-weight: bold;
+      color: #004d40;
+      background: #e0f2f1;
+      padding: 1px 3px;
+      border-radius: 2px;
+      border: 0.5px solid #b2dfdb;
+      transform: rotate(-15deg);
+    }
+
+    /* Single Large Preview mode */
+    .single-preview-container {
+      display: none;
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+      align-items: center;
+      flex-direction: column;
+      border: 1px solid var(--border-color);
+    }
+
+    .single-preview-container.active {
+      display: flex;
+    }
+
+    .sticker-large {
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      border: 8px double var(--primary-gold);
+      background-color: var(--bg-cream);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .sticker-large .sticker-logo-img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 5px;
+    }
+
+    .sticker-large .sticker-brand {
+      font-size: 1.9rem;
+      letter-spacing: 3px;
+    }
+
+    .sticker-large .sticker-title {
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+
+    .sticker-large .sticker-ingredients {
+      font-size: 0.82rem;
+      max-width: 360px;
+      padding: 8px 0;
+      margin: 6px 0;
+    }
+
+    .sticker-large .sticker-meta {
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .sticker-large .sticker-codes-wrapper {
+      gap: 24px;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+    .sticker-large .barcode-badge {
+      width: 120px;
+      height: 104px;
+    }
+    .sticker-large .qr-badge {
+      width: 104px;
+      height: 104px;
+    }
+    .sticker-large .qr-rect-badge {
+      width: 104px !important;
+      height: 104px !important;
+      border-width: 2.5px !important;
+      border-radius: 8px !important;
+      padding: 8px !important;
+    }
+
+    .sticker-large .sticker-bottom-text {
+      font-size: 0.75rem;
+    }
+
+    .sticker-large .sticker-weight {
+      right: 45px;
+      top: 85px;
+      font-size: 0.95rem;
+      padding: 2px 8px;
+    }
+
+    .sticker-large .sticker-cert {
+      left: 40px;
+      top: 85px;
+      font-size: 0.85rem;
+      padding: 2px 6px;
+    }
+
+    .sticker-slogan {
+      font-family: 'Inter', sans-serif;
+    }
+    .sticker-large .sticker-slogan {
+      font-size: 0.72rem !important;
+      letter-spacing: 0.8px !important;
+      margin-top: 2px !important;
+    }
+    
+  </style>
+</head>
+<body>
+
+  <!-- Floating Controls (Hidden during print) -->
+  <div class="control-panel no-print">
+    <span class="panel-info" id="modeInfo">Одоогийн харагдац: А4 хуудсаар хэвлэх (12ш наалт)</span>
+    <button class="panel-btn secondary" id="btnToggle" onclick="toggleView()">🔎 Нэгээр томруулж харах</button>
+    <button class="panel-btn" onclick="window.print()">🖨️ Хэвлэх / PDF хадгалах</button>
+  </div>
+
+  <!-- A4 Print Layout Container -->
+  <div class="print-page" id="a4Page">
+    <div class="labels-grid">
+      <!-- 12 stickers dynamically generated via JS loop below -->
+    </div>
+  </div>
+
+  <!-- Single Large Preview Panel -->
+  <div class="single-preview-container" id="singleContainer">
+    <div class="sticker-large">
+      <div class="sticker-cert">MNAS Гэрчилгээтэй</div>
+      <div class="sticker-weight">Жин: 100г</div>
+      <div class="sticker-header">
+        <img src="facebook_assets/fb_profile.png" alt="Logo" class="sticker-logo-img">
+        <h1 class="sticker-brand">САЙХАН ГОВЬ</h1>
+        <div class="sticker-slogan" style="font-size: 0.38rem; font-weight: bold; color: var(--dark-gold); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 1px; line-height: 1;">Өвөрмөц амттай</div>
+      </div>
+      <div>
+        <h2 class="sticker-title">Ингэний хоормогтой зайрмаг</h2>
+        <div class="sticker-ingredients" style="font-size: 0.8rem; margin: 4px 0;">
+          <strong>Орц найрлага:</strong> Ингэний хоормог, зайрмагны хуурай бэлдэц, сүмс (гүзээлзгэнэ, нэрс, шоколад).
+        </div>
+        <div class="sticker-nutrition" style="font-size: 0.72rem; color: #555; margin: 4px 0; border-top: 1px solid rgba(197,168,128,0.2); border-bottom: 1px solid rgba(197,168,128,0.2); padding: 4px 0;">
+          <strong>Шимт бодисын агууламж (100г-д):</strong><br>
+          Илчлэг 84.2ккал | Тос 3.2г | Уураг 2.5г | Нүүрс ус 8.6г | Чихэр 9.3г
+        </div>
+        <div class="sticker-meta" style="font-size: 0.75rem;">
+          <strong>Үйлдвэрлэгч:</strong> Сайхан Говийн Авдар Алт Консалтинг ХХК<br>
+          <strong>Байршил:</strong> Өмнөговь аймаг, Даланзадгад хот, Төвийн гудамж<br>
+          <strong>Холбоо барих:</strong> 9902-0609, 9496-8379 · dolgoonoo473@gmail.com<br>
+          <strong>Facebook:</strong> fb.com/profile.php?id=61590837030135
+        </div>
+      </div>
+      <div style="width: 100%;">
+        <div class="sticker-codes-wrapper">
+          <!-- Barcode Badge (Clean Rectangular for 100% Scanability) -->
+          <div class="sticker-code-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center; width: 68px; height: 52px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+            <img src="barcode_cup.png" alt="Barcode" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+          </div>
+          <!-- Website QR Code Badge (Clean Rectangular for 100% Scanability) -->
+          <div class="sticker-code-badge qr-rect-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+            <img src="qr_code.png" alt="Website QR" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+          </div>
+        </div>
+        <span class="sticker-bottom-text">Бүртгэл: 1111017944 · Шинжилгээний гэрчилгээ: MNAS №26-318</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isSingleView = false;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const gridContainer = document.querySelector(".labels-grid");
+      const stickerHTML = `
+        <div class="sticker-label">
+          <div class="sticker-cert">MNAS</div>
+          <div class="sticker-weight">100г</div>
+          <div class="sticker-header">
+            <img src="facebook_assets/fb_profile.png" alt="Logo" class="sticker-logo-img">
+            <h1 class="sticker-brand">САЙХАН ГОВЬ</h1>
+            <div class="sticker-slogan" style="font-size: 0.38rem; font-weight: bold; color: var(--dark-gold); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 1px; line-height: 1;">Өвөрмөц амттай</div>
+          </div>
+          <div>
+            <h2 class="sticker-title" style="font-size: 0.52rem; font-weight: bold; margin: 1px 0;">Ингэний хоормогтой зайрмаг</h2>
+            <div class="sticker-ingredients" style="font-size: 0.36rem; line-height: 1.1; padding: 2px 0;">
+              <strong>Орц:</strong> Ингэний хоормог, зайрмагны хуурай бэлдэц, сүмс (гүзээлзгэнэ, нэрс, шоколад).
+            </div>
+            <div class="sticker-nutrition" style="font-size: 0.32rem; color: #555; margin-top: 1px; line-height: 1.1; margin-bottom: 2px; border-top: 0.5px solid rgba(197,168,128,0.2); border-bottom: 0.5px solid rgba(197,168,128,0.2); padding: 1px 0;">
+              Илчлэг 84.2ккал | Тос 3.2г | Уураг 2.5г | Нүүрс ус 8.6г | Чихэр 9.3г
+            </div>
+            <div class="sticker-meta" style="font-size: 0.35rem; line-height: 1.1;">
+              Сайхан Говийн Авдар Алт Консалтинг ХХК<br>
+              Утас: 9902-0609, 9496-8379<br>
+              Facebook: fb.com/profile.php?id=61590837030135
+            </div>
+          </div>
+          <div style="width: 100%;">
+            <div class="sticker-codes-wrapper">
+              <!-- Barcode Badge (Clean Rectangular for 100% Scanability) -->
+              <div class="sticker-code-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 4.5px; display: flex; align-items: center; justify-content: center; width: 68px; height: 52px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+                <img src="barcode_cup.png" alt="Barcode" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+              </div>
+              <!-- Website QR Code Badge (Clean Rectangular for 100% Scanability) -->
+              <div class="sticker-code-badge qr-rect-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 4.5px; display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+                <img src="qr_code.png" alt="Website QR" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+              </div>
+            </div>
+            <span class="sticker-bottom-text" style="font-size: 0.32rem;">MNAS №26-318 · УБД: 1111017944</span>
+          </div>
+        </div>
+      `;
+      
+      gridContainer.innerHTML = "";
+      for (let i = 0; i < 12; i++) {
+        gridContainer.innerHTML += stickerHTML;
+      }
+    });
+
+    function toggleView() {
+      isSingleView = !isSingleView;
+      const a4Page = document.getElementById('a4Page');
+      const singleContainer = document.getElementById('singleContainer');
+      const btnToggle = document.getElementById('btnToggle');
+      const modeInfo = document.getElementById('modeInfo');
+      
+      if (isSingleView) {
+        a4Page.style.display = 'none';
+        singleContainer.classList.add('active');
+        btnToggle.textContent = '📄 А4 хуудсаар харах (12ш)';
+        modeInfo.textContent = 'Одоогийн харагдац: Нэг бүрчлэн томруулж харах';
+      } else {
+        a4Page.style.display = 'flex';
+        singleContainer.classList.remove('active');
+        btnToggle.textContent = '🔎 Нэгээр томруулж харах';
+        modeInfo.textContent = 'Одоогийн харагдац: А4 хуудсаар хэвлэх (12ш наалт)';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <title>Сайхан Говь - Нэрийн Хуудас Хэвлэх Эх (Business Card)</title>
+  <style>
+    :root {
+      --primary-gold: #c5a880;
+      --dark-gold: #8f724d;
+      --text-dark: #2c2520;
+      --bg-cream: #faf7f2;
+      --border-color: #e6dfd3;
+      --chocolate: #2b2118;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f0ebe4;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Print Specifics */
+    @media print {
+      body {
+        background: none !important;
+        padding: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-page {
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        background: #fff !important;
+      }
+    }
+
+    /* Floating control bar */
+    .control-panel {
+      background: rgba(0, 0, 0, 0.88);
+      padding: 15px 30px;
+      border-radius: 40px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
+    }
+    
+    .panel-btn {
+      background: var(--primary-gold);
+      color: #000;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+    }
+    .panel-btn:hover {
+      background: #dfc39e;
+      transform: translateY(-2px);
+    }
+    .panel-btn.secondary {
+      background: transparent;
+      color: #fff;
+      border: 2px solid var(--primary-gold);
+    }
+    .panel-btn.secondary:hover {
+      background: rgba(197, 168, 128, 0.15);
+    }
+    .panel-info {
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    /* A4 Print Page Container */
+    .print-page {
+      background: #fff;
+      width: 794px; /* A4 width at 96dpi */
+      height: 1123px; /* A4 height at 96dpi */
+      padding: 40px 30px;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .print-header {
+      font-size: 0.85rem;
+      color: #777;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    /* Card Grid Layout for A4 (10 cards: 5 fronts on left, 5 backs on right for easy duplex cutting) */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(5, 1fr);
+      gap: 15px 25px;
+      width: 100%;
+      height: 100%;
+      flex-grow: 1;
+    }
+
+    /* Standard Card size is 90mm x 50mm -> ~340px x 190px */
+    .biz-card {
+      width: 340px;
+      height: 188px;
+      border: 1px solid #ccc;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    /* Scissor crop marks on print */
+    .biz-card::before {
+      content: '';
+      position: absolute;
+      top: -5px; left: -5px; right: -5px; bottom: -5px;
+      border: 1px dashed #ddd;
+      pointer-events: none;
+    }
+
+    /* FRONT SIDE DESIGN */
+    .biz-card.front {
+      background-color: var(--chocolate);
+      color: #fff;
+      border: 1px solid var(--chocolate);
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .card-border {
+      border: 1.5px solid var(--primary-gold);
+      width: 100%;
+      height: 100%;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1.5px solid var(--primary-gold);
+      object-fit: cover;
+      margin-bottom: 8px;
+    }
+
+    .card-brand {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary-gold);
+      letter-spacing: 2.5px;
+      margin-bottom: 2px;
+      line-height: 1.1;
+    }
+
+    .card-slogan {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #dfc39e;
+      font-weight: 500;
+    }
+
+    /* BACK SIDE DESIGN */
+    .biz-card.back {
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      border: 1px dashed var(--primary-gold);
+      padding: 15px;
+    }
+
+    .back-container {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      gap: 10px;
+    }
+
+    .back-left {
+      width: 62%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px dashed rgba(197, 168, 128, 0.4);
+      padding-right: 8px;
+    }
+
+    .back-right {
+      width: 38%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .back-title {
+      font-weight: bold;
+      font-size: 0.8rem;
+      color: var(--dark-gold);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .back-info {
+      font-size: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .back-info-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      line-height: 1.2;
+    }
+
+    .back-thanks {
+      font-size: 0.52rem;
+      font-style: italic;
+      color: #7c6850;
+      border-top: 1px solid rgba(197, 168, 128, 0.2);
+      padding-top: 4px;
+    }
+
+    .biz-code-badge {
+      position: relative;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .back-right .qr-badge {
+      width: 44px;
+      height: 44px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.04));
+    }
+    .back-right .qr-rect-badge {
+      width: 44px !important;
+      height: 44px !important;
+      border-width: 1px !important;
+      border-radius: 4px !important;
+      padding: 3px !important;
+    }
+
+    .back-right .barcode-badge {
+      width: 48px;
+      height: 44px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.04));
+    }
+
+    .biz-code-badge .badge-bg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .back-right .qr-badge .badge-code-img {
+      position: absolute;
+      top: 50%;
+      left: 58%;
+      transform: translate(-50%, -50%);
+      width: 44%;
+      height: 44%;
+      object-fit: contain;
+    }
+
+    .back-right .barcode-badge .badge-code-img {
+      position: absolute;
+      top: 72%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 72%;
+      height: 32%;
+      object-fit: fill;
+    }
+
+    .code-caption {
+      font-size: 0.48rem;
+      color: #666;
+      text-align: center;
+      margin-top: 1px;
+    }
+
+    /* Single Large Preview mode */
+    .single-preview-container {
+      display: none;
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+      align-items: center;
+      flex-direction: column;
+      gap: 30px;
+      border: 1px solid var(--border-color);
+    }
+
+    .single-preview-container.active {
+      display: flex;
+    }
+
+    .preview-card-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-label {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: var(--dark-gold);
+      text-transform: uppercase;
+    }
+
+    .single-preview-container .biz-card {
+      width: 500px;
+      height: 277px; /* Proportional 9x5 scale */
+    }
+
+    /* Scale up contents for large preview */
+    .single-preview-container .biz-card.front {
+      padding: 30px;
+    }
+    .single-preview-container .card-logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 12px;
+    }
+    .single-preview-container .card-brand {
+      font-size: 2.3rem;
+      letter-spacing: 4px;
+    }
+    .single-preview-container .card-slogan {
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+    }
+
+    .single-preview-container .biz-card.back {
+      padding: 25px;
+    }
+    .single-preview-container .back-title {
+      font-size: 1.15rem;
+    }
+    .single-preview-container .back-info {
+      font-size: 0.88rem;
+      gap: 8px;
+    }
+    .single-preview-container .back-thanks {
+      font-size: 0.76rem;
+      padding-top: 8px;
+    }
+    .single-preview-container .back-right .qr-badge {
+      width: 90px;
+      height: 90px;
+    }
+    .single-preview-container .back-right .qr-rect-badge {
+      width: 90px !important;
+      height: 90px !important;
+      border-width: 2px !important;
+      border-radius: 6px !important;
+      padding: 6px !important;
+    }
+    .single-preview-container .back-right .barcode-badge {
+      width: 100px;
+      height: 90px;
+    }
+    .single-preview-container .code-caption {
+      font-size: 0.72rem;
+      margin-top: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Controls (Hidden during print) -->
+  <div class="control-panel no-print">
+    <span class="panel-info" id="modeInfo">Одоогийн харагдац: А4 хуудсаар хэвлэх (10ш нэрийн хуудас)</span>
+    <button class="panel-btn secondary" id="btnToggle" onclick="toggleView()">🔎 Нүүр & Ар талыг харах</button>
+    <button class="panel-btn" onclick="window.print()">🖨️ Хэвлэх / PDF хадгалах</button>
+  </div>
+
+  <!-- A4 Print Layout Container -->
+  <div class="print-page" id="a4Page">
+    <div class="print-header">
+      Сайхан Говь - Нэрийн хуудас зүсэх шугамтай А4 хэвлэх бэлэн эх (Зүүн тал: Нүүр, Баруун тал: Ар тал)
+    </div>
+    <div class="cards-grid">
+      <!-- 5 rows of fronts and backs generated dynamically by JS below -->
+    </div>
+  </div>
+
+  <!-- Single Large Preview Panel -->
+  <div class="single-preview-container" id="singleContainer">
+    <div class="preview-card-wrap">
+      <div class="preview-label">Нүүр тал (Front Face)</div>
+      <div class="biz-card front">
+        <div class="card-border">
+          <img src="facebook_assets/fb_profile.png" alt="Logo" class="card-logo">
+          <h1 class="card-brand">САЙХАН ГОВЬ</h1>
+          <p class="card-slogan">100% Ингэний хоормогтой зайрмаг</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-card-wrap">
+      <div class="preview-label">Ар тал (Back Face)</div>
+      <div class="biz-card back">
+        <div class="back-container">
+          <div class="back-left">
+            <div>
+              <div class="back-title">Сайхан Говь</div>
+              <div class="back-info">
+                <div class="back-info-item">🏢 Сайхан Говийн Авдар Алт Консалтинг ХХК</div>
+                <div class="back-info-item">📞 Утас: 9902-0609, 9496-8379</div>
+                <div class="back-info-item">📍 Даланзадгад хот, Өмнөговь аймаг</div>
+                <div class="back-info-item">✉️ Email: dolgoonoo473@gmail.com</div>
+                <div class="back-info-item">🌐 Facebook: fb.com/profile.php?id=61590837030135</div>
+              </div>
+            </div>
+            <div class="back-thanks">✨ Органик бөгөөд эрүүл амтыг сонгон үйлчлүүлсэнд тань баярлалаа.</div>
+          </div>
+          <div class="back-right">
+            <!-- Website QR Code Badge (Clean Rectangular for 100% Scanability) -->
+            <div class="biz-code-badge qr-rect-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 3px; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+              <img src="qr_code.png" alt="Website QR" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+            </div>
+            <!-- Barcode Badge (Clean Rectangular for 100% Scanability) -->
+            <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px;">
+              <div class="biz-code-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center; width: 68px; height: 52px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+                <img src="barcode_cup.png" alt="Barcode" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+              </div>
+              <div class="code-caption" style="margin-top: 2px;">8659496837908</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isSingleView = false;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const gridContainer = document.querySelector(".cards-grid");
+      const cardRowHTML = `
+        <div class="biz-card front">
+          <div class="card-border">
+            <img src="facebook_assets/fb_profile.png" alt="Logo" class="card-logo">
+            <h1 class="card-brand">САЙХАН ГОВЬ</h1>
+            <p class="card-slogan">100% Ингэний хоормогтой зайрмаг</p>
+          </div>
+        </div>
+        <div class="biz-card back">
+          <div class="back-container">
+            <div class="back-left">
+              <div>
+                <div class="back-title">Сайхан Говь</div>
+                <div class="back-info">
+                  <div class="back-info-item">🏢 Сайхан Говийн Авдар Алт Консалтинг ХХК</div>
+                  <div class="back-info-item">📞 Утас: 9902-0609, 9496-8379</div>
+                  <div class="back-info-item">📍 Даланзадгад хот, Өмнөговь аймаг</div>
+                  <div class="back-info-item">✉️ Email: dolgoonoo473@gmail.com</div>
+                  <div class="back-info-item">🌐 Facebook: fb.com/profile.php?id=61590837030135</div>
+                </div>
+              </div>
+              <div class="back-thanks">✨ Сэрүүцүүлэх органик өвөрмөц амтыг танд...</div>
+            </div>
+            <div class="back-right">
+              <!-- Website QR Code Badge (Clean Rectangular for 100% Scanability) -->
+              <div class="biz-code-badge qr-rect-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 3px; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+                <img src="qr_code.png" alt="Website QR" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+              </div>
+              <!-- Barcode Badge (Clean Rectangular for 100% Scanability) -->
+              <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px;">
+                <div class="biz-code-badge" style="background: #ffffff; border: 1.5px solid var(--primary-gold); border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center; width: 68px; height: 52px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); overflow: hidden; position: relative;">
+                  <img src="barcode_cup.png" alt="Barcode" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                </div>
+                <div class="code-caption" style="margin-top: 2px;">8659496837908</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      gridContainer.innerHTML = "";
+      for (let i = 0; i < 5; i++) {
+        gridContainer.innerHTML += cardRowHTML;
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Inject overlays into QR badges
+      document.querySelectorAll(".qr-badge").forEach(badge => {
+        const overlay = document.createElement("div");
+        overlay.style.position = "absolute";
+        overlay.style.width = "22%";
+        overlay.style.height = "22%";
+        overlay.style.background = "white";
+        overlay.style.border = "1px solid var(--primary-gold)";
+        overlay.style.borderRadius = "50%";
+        overlay.style.display = "flex";
+        overlay.style.alignItems = "center";
+        overlay.style.justifyContent = "center";
+        overlay.style.padding = "1px";
+        overlay.style.boxShadow = "0 1px 3px rgba(0,0,0,0.15)";
+        overlay.style.top = "50%";
+        overlay.style.left = "58%";
+        overlay.style.transform = "translate(-50%, -50%)";
+        overlay.style.zIndex = "20";
+        
+        // Ice cream cup shape inside website QR code
+        overlay.innerHTML = `
+          <svg viewBox="0 0 100 100" style="width: 80%; height: 80%; fill: var(--dark-gold);">
+            <path d="M 40,65 L 60,115 L 80,65 Z M 40,65 C 35,65 30,55 35,45 C 30,35 40,25 50,20 C 55,10 65,10 70,20 C 80,25 90,35 85,45 C 90,55 85,65 80,65 Z" />
+          </svg>
+        `;
+        badge.style.position = "relative";
+        badge.appendChild(overlay);
+      });
+
+    });
+
+    function toggleView() {
+      isSingleView = !isSingleView;
+      const a4Page = document.getElementById('a4Page');
+      const singleContainer = document.getElementById('singleContainer');
+      const btnToggle = document.getElementById('btnToggle');
+      const modeInfo = document.getElementById('modeInfo');
+      
+      if (isSingleView) {
+        a4Page.style.display = 'none';
+        singleContainer.classList.add('active');
+        btnToggle.textContent = '📄 А4 хуудсаар харах (10ш)';
+        modeInfo.textContent = 'Одоогийн харагдац: Нүүр & Ар талыг томруулж харах';
+      } else {
+        a4Page.style.display = 'flex';
+        singleContainer.classList.remove('active');
+        btnToggle.textContent = '🔎 Нүүр & Ар талыг харах';
+        modeInfo.textContent = 'Одоогийн харагдац: А4 хуудсаар хэвлэх (10ш нэрийн хуудас)';
+      }
+    }
+  </script>
+</body>
+</html>
