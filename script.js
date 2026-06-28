@@ -554,6 +554,36 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// ===== EVENT VIDEO GALLERY =====
+function switchEventVideo(videoSrc, titleText, element) {
+  const mainVideo = document.getElementById('eventMainVideo');
+  const videoTitle = document.getElementById('eventVideoTitle');
+  
+  if (mainVideo && videoSrc) {
+    // Add a fade-out effect during transition
+    mainVideo.style.opacity = '0.3';
+    
+    setTimeout(() => {
+      mainVideo.src = videoSrc;
+      mainVideo.load();
+      mainVideo.play().catch(e => console.log("Video auto-play blocked or failed:", e));
+      mainVideo.style.opacity = '1';
+    }, 200);
+  }
+  
+  if (videoTitle && titleText) {
+    videoTitle.innerText = titleText;
+  }
+  
+  // Highlight active playlist item
+  document.querySelectorAll('.playlist-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  if (element) {
+    element.classList.add('active');
+  }
+}
+
 // ===== INIT =====
 updateTotal();
 
@@ -561,3 +591,4 @@ console.log('🐪 Сайхан Говь — Ингэний Хоормогтой 
 console.log('📍 Даланзадгад хот, Өмнөговь аймаг, Монгол улс');
 console.log('📞 9496-8379 | 9902-0609');
 console.log('✅ MNAS Гэрчилгээ №26-318');
+
