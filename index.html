@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=5" />
+  <link rel="stylesheet" href="style.css?v=6" />
 </head>
 <body>
 
@@ -540,16 +540,24 @@
         <!-- Main video player -->
         <div class="event-main-player">
           <div class="video-wrapper">
-            <video id="eventMainVideo" src="IMG_5930.mp4" controls autoplay muted loop playsinline></video>
-            <div class="video-overlay-title" id="eventVideoTitle">Ингэний зайрмагны стенд ба зочид</div>
+            <video id="eventMainVideo" src="khan_bank_highlight.mp4" controls autoplay muted loop playsinline></video>
+            <div class="video-overlay-title" id="eventVideoTitle">Хаан Банкны албан ёсны видео 🏆</div>
           </div>
         </div>
 
         <!-- Playlist selector sidebar -->
         <div class="event-playlist">
-          <div class="playlist-title">🎵 Наадмын бичлэгүүд (8)</div>
+          <div class="playlist-title">🎵 Наадмын бичлэгүүд (9)</div>
           <div class="playlist-items-container">
-            <div class="playlist-item active" onclick="switchEventVideo('IMG_5930.mp4', 'Ингэний зайрмагны стенд ба зочид', this)">
+            <div class="playlist-item active" onclick="switchEventVideo('khan_bank_highlight.mp4', 'Хаан Банкны албан ёсны видео 🏆', this)">
+              <div class="pi-thumb">🏦</div>
+              <div class="pi-info">
+                <h4>Хаан Банкны албан ёсны видео 🏆</h4>
+                <span>⏱️ 1 мин 15 сек</span>
+              </div>
+              <div class="pi-play">▶</div>
+            </div>
+            <div class="playlist-item" onclick="switchEventVideo('IMG_5930.mp4', 'Ингэний зайрмагны стенд ба зочид', this)">
               <div class="pi-thumb">🐪</div>
               <div class="pi-info">
                 <h4>Ингэний зайрмагны стенд ба зочид</h4>
@@ -718,6 +726,6 @@
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=6"></script>
 </body>
 </html>
